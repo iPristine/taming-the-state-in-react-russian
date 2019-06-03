@@ -1,30 +1,30 @@
-## Requirements
+## Требования
 
-What are the requirements to read the book? First of all, you should be familiar with the basics of web development. You should know how to use HTML, CSS and JavaScript. Perhaps it makes sense to know the term [API](https://www.robinwieruch.de/what-is-an-api-javascript/) too, because you will use APIs in the book. In addition, I encourage you to join the official [Slack Group](https://slack-the-road-to-learn-react.wieruch.com/) for the book to get help or to help others.
+Каковы требования для чтения книги? Прежде всего, вы должны быть знакомы с основами веб-разработки. Вы должны знать, как использовать HTML, CSS и JavaScript. Возможно, имеет смысл знать и термин [API] (https://www.robinwieruch.de/what-is-an-api-javascript/), потому что вы будете использовать API в книге. Кроме того, я призываю вас присоединиться к официальному [Slack каналу](https://slack-the-road-to-learn-react.wieruch.com/) книге, чтобы получить помощь или помочь другим.
 
 ### React
 
-The book uses React as library to teach modern state management. It is a perfect choice for demonstrating and learning state management in modern applications. Because React is only a view layer, it is up to you to decide how to deal with the state in your application. The state management layer is exchangeable.
+Книга использует React в качестве библиотеки для обучения современному управлению состоянием. Это идеальный выбор для демонстрации и изучения управления состоянием в современных приложениях. Поскольку React является только слоем представления, вам решать, как обращаться с состоянием в вашем приложении. Уровень государственного управления является взаимозаменяемым.
 
-After all, it's not necessary to be a React developer in order to learn about state management in modern applications. If you are developing with another framework, such as Angular, or library, such as Vue, all these things about state management taught in this book can still be applied in your applications.
+В конце концов, не обязательно быть React-разработчиком, чтобы изучать управление состоянием в современных приложениях. Если вы разрабатываете с друг, такой как Angular, или библиотекой, такой как Vue, все эти вещи об управлении состоянием, изложенные в этой книге, могут все еще применяться в ваших приложениях.
 
-Still, since the book uses React for the sake of teaching state management in a proper context, if you are not familiar with React or need to have a refresher on the topic, I encourage you to read the precedent book: [The Road to learn React](https://www.robinwieruch.de/the-road-to-learn-react/). It is for free and should enable everyone to learn React. However, you can decide to pay something to support the project.
+Тем не менее, поскольку книга использует React для обучения управлению состоянием, для надлежащего контекста, если вы не знакомы с React или вам нужно освежить в памяти эту тему, я призываю вас прочитать предыдущую книгу: [Дорога к обучению React](https://www.robinwieruch.de/the-road-to-learn-react/). Это бесплатно и должно позволить каждому изучить React. Однако вы можете заплатить сколько-то, чтобы поддержать проект.
 
-Even though the Road to learn React is for free, people with lacking education have no access to these resources in the first place. They have to be educated in the English language to be enabled to access it. The Road to learn React attempts [to support education in the developing world](https://www.robinwieruch.de/giving-back-by-learning-react/) on an occasionally basis, but it is a tough undertaking since the book itself is pay what you want.
+Несмотря на то, что Дорога к изучению React является бесплатной, люди с недостатком образования, в первую очередь, не имеют доступа к этим ресурсам. Они должны быть обучены английскому языку, чтобы иметь доступ к книге. Дорога к обучению React пытается [поддержать образование в развивающихся странах](https://www.robinwieruch.de/giving-back-by-learning-react/) время от времени, но это трудная задача, поскольку сама книга стоит, столько сколько вы захотите заплатить.
 
-In addition, the Road to learn React teaches you to make the transition from JavaScript ES5 to JavaScript ES6. After having read the Road to learn React, you should possess all the knowledge to read this book. It builds up on the React book perfectly.
+Кроме того, Путь к изучению React научит вас как перейти от JavaScript ES5 к JavaScript ES6. Прочитав «Путь к изучению React», вы будете обладать всеми знаниями, необходимыми для чтения этой книги. Он отлично вписывается в книгу Реакта.
 
-### Editor and Terminal
+### Редактор и теминал
 
-What about the development environment? You will need a running editor or IDE and terminal (command line tool). You can [follow my setup guide](https://www.robinwieruch.de/developer-setup/). It is adjusted for MacOS users, but you can find a Windows setup guide for React too. In general, there is a ton of articles out there that will show you how to setup a web development environment in a more elaborated way for your OS.
+А как насчет среды разработки? Вам понадобится работающий редактор или IDE и терминал (инструмент командной строки). Вы можете [следовать моему руководству по установке](https://www.robinwieruch.de/developer-setup/). Он подойдет для пользователей MacOS, но вы также можете найти руководство по установке Windows для React. В общем, существует масса статей, которые покажут вам, как настроить среду веб-разработки более детально для вашей ОС.
 
-Optionally, you can use git and GitHub on your own, while conducting the exercises in the book, to keep your projects and the progress in repositories on GitHub. There exists a [little guide](https://www.robinwieruch.de/git-essential-commands/) on how to use these tools. But once again, it is not mandatory for the book and can be overwhelming when learning everything from scratch. So you can skip it if you are a newcomer in web development to focus on the essential parts taught in this book.
+При желании вы можете использовать git и GitHub самостоятельно, выполняя упражнения из книги, чтобы сохранить свои проекты и прогресс в репозиториях на GitHub. Существует [маленькое руководство](https://www.robinwieruch.de/git-essential-commands/) о том, как использовать эти инструменты. Но еще раз, это не обязательно для книги и может быть подавляющим, изучая все с нуля. Так что вы можете пропустить это, если вы новичок в веб-разработке, чтобы сосредоточиться на основных частях, изложенных в этой книге.
 
-### Node and NPM
+### Node.js and NPM
 
-Last but not least, you will need an installation of [node and npm](https://nodejs.org/en/). Both are used to manage libraries you will need along the way. In this book, you will install external node packages via npm (node package manager). These node packages can be libraries or whole frameworks.
+И последнее, но не менее важное: вам потребуется установка [Node.js and npm](https://nodejs.org/en/). Оба используются для управления библиотеками, которые вам понадобятся в пути. В этой книге вы будете устанавливать внешние пакеты внешних через npm (менеджер пакетов Node.js ). Эти пакеты могут быть библиотеками или целыми фреймворками.
 
-You can verify your versions of node and npm on the command line. If you don't get any output in the terminal, you need to install node and npm first. These are only my versions during the time writing this book:
+Вы можете проверить свои версии Node.js и npm в командной строке. Если вы не получили никакого вывода в терминале, вам нужно сначала установить Node.js и npm. Это только мои версии во время написания этой книги:
 
 {title="Command Line",lang="text"}
 ~~~~~~~~
@@ -34,4 +34,4 @@ npm --version
 *v6.1.0
 ~~~~~~~~
 
-If you read the Road to learn React, you should be familiar with the setup already. The book gives you a short introduction into the npm ecosystem on the command line, too. So if you are not familiar with this, once again you can pick up the Road to learn React book.
+Если вы читаете «Путь к изучению React», вы должны быть уже знакомы с настройкой. Книга также дает краткое введение в экосистему npm в командной строке. Так что, если вы не знакомы с этим, еще раз повторюсь, вы можете взять книгу «Путь к изучению React».
