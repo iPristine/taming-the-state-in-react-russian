@@ -1,49 +1,49 @@
-## Definitions
+## Определения
 
-Before we dive into state management, this chapter gives you general definitions and definitions for state managements to build up a common vocabulary for state management for this book. It should help you to follow the book effortlessly when reading it without leaving space for confusion.
+Перед тем, как мы углубимся в управление состояниями, в этой главе приведены общие определения и определения для управления состояниями, чтобы создать общий словарь управления состояниями для этой книги. Это должно помочь вам без труда следовать интруциям из книги, не оставляя места для путаницы.
 
-### Pure Functions
+### Чистые функции
 
-Pure functions is a concept from the functional programming paradigm. It says that a pure function always returns the same output if given the same input. There is no layer in between that could alter the output on the way when the input doesn't change. The layer in between, that could possibly alter the output, is called **side-effect**. Thus, pure functions have no side-effects. Two major benefits of these pure functions are predictability and testability.
+Чистые функции - это понятие из парадигмы функционального программирования. Парадигма гласит, что чистая функция всегда возвращает один и тот же результат, при одних и тех же вводных данных. Между ними нет слоя, который мог бы изменить результат в процессе выполнения, пока входные данные не меняются. Слой между ними, который может изменить результат, называется **побочным эффектом**. Таким образом, чистые функции не имеют побочных эффектов. Двумя основными преимуществами этих чистых функций являются предсказуемость и тестируемость.
 
-### Immutability
+### Неизменяемость
 
-Immutability is a concept of functional programming, too. It says that a data structure is immutable when it cannot be changed. When there is the need to modify the immutable data structure, for instance an object, you would always return a new object. Rather than altering the object at hand, you would create a new object based on the old object and the modification. The old and new object would have their own instances.
+Неизменность - это тоже концепция функционального программирования. Это концепция говорит о том, что структура данных остается неизменна, ее нельзя изменять. Когда есть необходимость изменить неизменяемую структуру данных, например, объект, вы всегда возвращаете новый объект. Вместо того, чтобы изменять объект, вы должны создать новый объект на основе старого объекта и ваших изменений. У старого и нового объекта будут свои экземпляры.
 
-Immutable data structures have the benefit of predictability. For instance, when sharing an object through the whole application, it could lead to bugs when altering the object directly, because every stakeholder has a reference to this potentially altered object. It would be unpredictable what happens when an object changes and a handful of stakeholders, such as UI components, are dependent on this object. In a growing application, it is difficult to oversee the places where the object is currently used by its reference.
+Неизменяемая структура данных имеют преимущество предсказуемости. Например, совместное использовании объекта через все приложение может привести к ошибкам при непосредственном изменении объекта, поскольку каждая заинтересованная сторона имеет ссылку на этот потенциально измененный объект. Было бы непредсказуемо, что произойдет, когда объект изменится, и несколько заинтересованных сторон, таких как компоненты пользовательского интерфейса, зависят от этого объекта. В растущем приложении трудно контролировать места, где объект используется в настоящее время по его ссылке.
 
-Note: The antagonist of immutability is called mutability. It says that an object can be modified.
+Примечание: провоположностью неизменности называется изменяемость. Это говорит о том, что объект может быть изменен.
 
-### State
+### Состояние
 
-State is a broad word in modern applications. When speaking about **application state**, it could be anything that needs to be stored and be **managed (created, updated, deleted)** in the application. The state can be **remote data** which is fetched from a backend application or **view data** which lives only on the client-side of the application.
+Состояние - широкое понятие в современных приложениях. Говоря о **состоянии приложения**, это может быть что угодно, что нужно сохранить и **чем можно управлять (создавать, обновлять, удалять)** в приложении. Состояние может быть **сторонними данные**, которые извлекаются из бэкенда приложения или **просматриваемыми данными**, которые сушествуют только на стороне клиента приложения.
 
-I will refer to the former one as **entity state** and to the latter one as **view state**. Entity state is data retrieved from a backend application. It could be a list of authors or the user object describing the user that is currently logged in to the application. View state, on the other hand, doesn't need to be stored in the backend. It is used when you open up a modal or switch a box from preview to edit mode.
+Я буду ссылаться на первое как **состояние организации**, а второе - на **состояние представления**. Состояние организации - это данные, полученные из бекэнда приложения. Это может быть список авторов или объект пользователя, описывающий пользователя, который в данный момент вошел в приложение. С другой стороны, состояние представления не нужно хранить в бэкэнде. Он используется, когда вы открываете модальное или переключаетесь из режима предварительного просмотра в режим редактирования.
 
-When speaking about managing the state, meaning creating, updating and deleting state, it will be coined under the umbrella term of state management. Yet, state management is a much broader topic. While the mentioned actions are low-level operations, almost implementation details, the architecture, best practices and patterns around state management stay abstract. **State management** involves all these topics to keep your application state durable.
+Говоря об управлении состоянием, подразумевая создание, обновление и удаление состояния, мы объединяем их под общим термином управления состоянием. Тем не менее, управление состоянием является гораздо более широкой темой. Хотя упомянутые действия являются низкоуровневыми операциями, почти на уровне реализации, архитектура, распостраненные практики и шаблоны управления состоянием остаются абстрактными. **Управление состоянием** включает в себя все эти темы, чтобы сохранить состояние вашего приложения.
 
-#### The Size of State
+#### Размер состояния
 
-State can be an atomic object or one large aggregated object. When speaking about the view state, that only determines whether a popup is open or closed, it is an **atomic state object**. When the whole application state can be derived from one aggregated object, which includes all the atomic state objects, it is called a **global state object**. Often, a global state object implies that it is accessible from everywhere.
+Состоянием может быть отдельным объектом или одним большим составным объектом. Если говорить о состоянии представления, которое определяет только, является ли всплывающее окно открытым или закрытым, это **локальный объект состояния**. Когда все состояние приложения может быть получено из одного составного объекта, который включает в себя все объекты локального состояния, он называется **глобальным объектом состояния**. Часто глобальный объект состояния подразумевает, что он доступен отовсюду.
 
-The state itself can be differentiated into **local state** and **sophisticated state**. The management of this state is called **local state management** and **sophisticated state management**.
+Само состояние можно разделить на **локальное состояние** и **глобальное состояние**. Управление этим состоянием называется **управление локальным состоянием** и **управление глобальным состоянием**.
 
-#### Local State
+#### Локальное состояние
 
-The naming local state is widely accepted in the web development community. Another term might be **internal component state**. Local state is bound to components or component hierarchies. It lives in the view layer. It is not stored somewhere else outside of this view layer. That's why it is called local state because it is co-located to the component.
+Название локального состояния широко распространено в сообществе веб-разработчиков. Другим термином может быть **внутренне состояние компонента**. Локальное состояние связано с компонентами или иерархиями компонентов. Оно живет в слое представления. Оно не хранится где-то еще за пределами слоя представления. Вот почему он называется локальным состоянием, потому что оно расположен на одном уровне с компонентом.
 
-In React, the local state is embraced by using `this.state` and `this.setState()`. But it can have a different implementation and usage in other view layer or SPA solutions. The book explains and showcases the local state in React before diving into sophisticated state management with external libraries such as Redux and MobX.
+В React локальное состояние управляется с помощью `this.state` и `this.setState()`. Но оно может управляться и использоваться на другом уровне представления или решениях SPA. Книга объясняет и демонстрирует локальное состояние в React перед тем, как погрузиться в сложное управление состоянием с внешними библиотеками, такими как Redux и MobX.
 
-#### Sophisticated State
+#### Глобальное состояние
 
-I cannot say that it is widely agreed on to call it sophisticated state in the web development community. However, at some point you need a term to distinguish it from local state. That's why I often refer to it as sophisticated state. In other resources, you might find it referred to as **external state**, because it lives outside of the UI components or outside of the view layer.
+Я не могу сказать, что в сообществе веб-разработчиков широко принято назвать это глобальным состоянием. Однако в какой-то момент вам нужен термин, чтобы отличить его от локального состояния. Вот почему я часто называю это глобальным состоянием. В других ресурсах вы можете найти его как **внешнее состояние**, потому что он находится за пределами компонентов пользовательского интерфейса или за пределами уровня представления.
 
-Most often, sophisticated state is outsourced to libraries that are library or framework agnostic and thus agnostic to the view layer. But most often they provide a bridge to access and modify state from the view layer. When using only local state in a scaling application, you will allocate too much state along your components in the view layer. However, at some point you want to separate view layer and state layer, because the state becomes too complex. That's when sophisticated state comes into play.
+Чаще всего глобальное состояние делегируется библиотекам, которые не зависят от библиотеки или фреймворка и, следовательно, не зависят от уровня представления. Но чаще всего они обеспечивают мост для доступа и изменения состояния из уровня представления. При использовании только локального состояния в масштабирующем приложении вы будете распределять слишком много состояний вдоль ваших компонентов в слое представления. Однако в какой-то момент вы захотите разделить слой представления и слой состояния, потому что состояние станет слишком сложным. Вот тогда в игру и вступает глобальное состояние.
 
-Two libraries that are known for managing sophisticated state are called Redux and MobX. Both libraries will be explained, discussed and showcased in this book.
+Две библиотеки, известные управлением глобальным состоянием, называются Redux и MobX. Обе библиотеки будут объяснены, обсуждены и продемонстрированы в этой книге.
 
-#### Visibility of State
+#### Представление состояния
 
-Since local state is only bound to the component instance, only the component itself is aware of these properties being state. However, the component can share the state to its child components. In React, the child components are unaware of these properties being state. They only receive these properties as props.
+Поскольку локальное состояние связано только с экземпляром компонента, только сам компонент знает, что эти свойства являются состоянием. Тем не менее, компонент может поделиться состоянием со своими дочерними компонентами. В React дочерние компоненты не знают, что эти свойства находятся в состоянии. Они получают эти свойства только в качестве пропса.
 
-On the other hand, sophisticated state is often globally accessible. In theory, the state can be accessed by each component. Often, it is not best practice to give every component access to the global state, thus it is up to the developer to bridge only selected components to the global state object. All other components stay unaware of the state and only receive properties as props to act on them.
+С другой стороны, глобальное состояние часто является глобально доступным. Теоретически, состояние может быть доступно каждому компоненту. Часто распостраненной практикой является не предоставлять каждому компоненту доступ к глобальному состоянию, поэтому от разработчика зависит какие компоненты будут связанны с глобальным объектом состояния. Все остальные компоненты остаются в неведении о состоянии и получают свойства только в качестве реквизита для воздействия на них.
