@@ -1,14 +1,14 @@
-## Scaling Local State in React
+## Масштабирование локального состояния в реакции
 
-You should know about all the basics in React's local state management by now. However, you will notice that there are more patterns and best practices out there to apply local state in a scaling application. The following chapter gives you insights into these topics.
+Вы должны знать все основы управления локальным состоянием в React к этому моменту. Тем не менее, вы заметите, что существует больше шаблонов и рекомендаций для применения локального состояния в масштабирующем приложении. Следующая глава даст вам понимание этих тем.
 
-### Lifting State
+### Подъем сосотояния
 
-In a scaling application, you will notice that you pass a lot of state down to child components as props. These props are often passed down multiple component levels. That's how state is shared vertically in your application. Yet, the other way around, you will notice that more components need to use and thus share the same state. That's how state needs to be shared horizontally across components in your component tree. These two scaling issues, sharing state vertically and horizontally, are common in local state management. Therefore you can lift the state up and down for keeping your local state architecture maintainable. Lifting the state prevents sharing too much or too little state in your component tree. Basically, it is a refactoring that you have to do once in a while to keep your components maintainable and focused on only consuming the state that they need to consume.
+В масштабируемом приложении вы заметите, что вы передаете много состояний дочерним компонентам в качестве пропса. Эти пропсы часто передаются по нескольким уровням компонентов. Вот как состояние делится вертикально в вашем приложении. Тем не менее, с другой стороны, вы заметите, больше компонентов использует и, таким образом,  делят одно и то же состояние. Поэтому нужно распределять состояние по горизонтали между компонентами в дереве компонентов. Эти две проблемы масштабирования, распределение состояние по вертикали и горизонтали, распространены в локальном управлении состояниями. Поэтому вы можете поднимать и опускать состояние, чтобы поддерживать работоспособность локального состояния. Поднятие состояния предотвращает распределение чрезмерно большого или слишком малого состояния в дереве компонентов. По сути, это рефакторинг, который вы должны выполнять время от времени, чтобы поддерживать компоненты в удобном для обслуживания состоянии и сосредоточиться только на том состоянии, которое им требуется.
 
-In order to experience up and down lifting of local state, the following chapter will demonstrate it with two examples. The first example that demonstrates the uplifting of state is called: "Search a List"-example. The second example that demonstrates the downlifting of state is called "Archive in a List"-example.
+Для того, чтобы понять подъем и спуск локального состояния, следующая глава продемонстрирует это двумя примерами. Первый пример, который демонстрирует подъем состояния, называется: «Search a List» . Второй пример, демонстрирующий спуск состояния, называется «Архив в списке».
 
-The "Search a List"-example has three components. Two sibling components, a `Search` component and a `List` component, that are used in an overarching `SearchableList` component. First, the implementation of the `Search` component:
+Пример «Поиск по списку» состоит из трех компонентов. Два родственных компонента, компонент `Поиск` и компонент `Список`, которые используются в объединяющем компоненте `SearchableList`. Сначала реализация компонента `Поиск`:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -47,7 +47,7 @@ class Search extends React.Component {
 }
 ~~~~~~~~
 
-Second, the implementation of `List` component:
+Теперь реализация компонента `List`:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -60,7 +60,7 @@ function List({ list }) {
 }
 ~~~~~~~~
 
-Third, the `SearchableList` component which uses both components, the `Search` and `List` components, and thus both components become siblings in the component tree:
+Теперь компонент `SearchableList`, который использует оба компонента, компоненты` Search` и `List`, и, таким образом, оба компонента становятся родственными элементами в дереве компонентов:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -74,11 +74,11 @@ function SearchableList({ list }) {
 }
 ~~~~~~~~
 
-While the `Search` component is a stateful ES6 class component, the `List` component is only a stateless functional component. The parent component that combines the `List` and `Search` components into a `SearchableList` component is a stateless functional component too.
+В то время как компонент `Search` является компонентом  на основе классов ES6 с состоянием, компонент `List` является только функциональным компонентом без состояния. Родительский компонент, который объединяет компоненты `List` и `Search` в компонент `SearchableList`, также является функциональным компонентом без состояния.
 
-However, the example doesn't work. The `Search` component knows about the `query` that could be used to filter the list, but the `List` component doesn't know about it. The state from the `Search` component can only flow down the component tree by using props but not up. Therefore, you have to lift the state of the `Search` component up to the `SearchableList` to make the `query` state accessible for the `List` component in order to filter the list eventually. You want to share the `query` state in both `List` component and `Search` component. Whereas the `Search` component is responsible for altering the state, the `List` component consumes the state to filter the list of items. The state should be managed in the `SearchableList` component to make it readable and writeable for both sibling components below.
+Однако пример не работает. Компонент `Search` знает о `query`, который можно использовать для фильтрации списка, но компонент `List` не знает об этом. Состояние из компонента «Search» может спускаться по дереву компонента с помощью пропсов, но не подниматься. Следовательно, вам необходимо поднять состояние компонента `Search` до `SearchableList`, чтобы сделать состояние `query` доступным для компонента `List`, чтобы в конечном итоге отфильтровать список. Вы хотите получать состояние `query` как в компоненте` List`, так и в компоненте `Search`. Принимая во внимание, что компонент `Search` отвечает за изменение состояния, компонент `List` использует состояние для фильтрации списка элементов. Состояние должно управляться в компоненте `SearchableList`, чтобы сделать его читаемым и доступным для записи для обоих родственных компонентов ниже.
 
-In order to lift the state up, the `SearchableList` becomes a stateful component. You have to refactor it to a React ES6 class component. On the other hand, you can refactor the `Search` component to a functional stateless component, because it doesn't need to be stateful anymore. The stateful parent component takes care about its whole state. In other cases, the `Search` component might stay as a stateful ES6 class component, because it still manages some other state, but it is not the case in this example. So first, that's the adjusted `Search` component:
+Чтобы поднять состояние, SearchableList становится компонентом с состоянием. Вы должны реорганизовать его в React компонент на основе классов ES6. Затем, вы можете реорганизовать компонент `Search` в функциональный компонент без состояния, так как он больше не должен хранить состояние. Родительский компонент с состоянием заботится обо всем своем состоянии. В других случаях компонент `Search` может оставаться компонентом на основе классов ES6 с состояния, поскольку он по-прежнему управляет некоторым другим состоянием, но в данном примере это не так. Итак снасчала это реорганизованный компонент `Search`:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -99,7 +99,7 @@ function Search({ query, onChange, children }) {
 }
 ~~~~~~~~
 
-Second, the adjusted `SearchableList` component:
+Теперь реорганизованный компонент `SearchableList`:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -160,9 +160,9 @@ function byQuery(query) {
 # leanpub-end-insert
 ~~~~~~~~
 
-After you have lifted the state up, the parent component takes care about the local state management. Both child components don't need to take care about it. You have lifted the state up to share the local state across the child components. The list gets filtered by the search query before it reaches the `List` component. An alternative would be passing the `query` state as prop to the `List` component and the `List` component would apply the filter to the list.
+После того как вы подняли состояние, родительский компонент позаботится об управлении локальными состояниями. Оба дочерних компонента не должны сохранять и обновлять его. Вы подняли состояние, чтобы разделить локальное состояние между дочерними компонентами. Список фильтруется поисковым запросом до того, как он достигает компонента `List`. Альтернативой может быть передача состояния `query` в качестве пропса компоненту` List`, а компонент `List` будет применять фильтр к списку.
 
-In the next part, let's get to the second example: the "Archive in a List"-example. It builds up on the previous example, but this time the `List` component has the extended functionality to archive an item in the list. Therefore, it needs to have a button to archive an item in the list identified by an unique `id` property of the item. First, the enhanced `List` component:
+Теперь давайте перейдем ко второму примеру: «Архив в списке». Он основан на предыдущем примере, но на этот раз компонент `List` обладает расширенной функциональностью для архивирования элемента в списке. Следовательно, он должн иметь кнопку для архивирования элемента в списке, идентифицируемого уникальным свойством `id` элемента. Вот расширенный компонент `List`:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -193,7 +193,7 @@ function List({ list, onArchive }) {
 }
 ~~~~~~~~
 
-Second, the `SearchableList` component which holds the state of archived items:
+А вот компонент SearchableList, который хранит состояние архивных элементов:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -263,9 +263,9 @@ function byArchived(archivedItems) {
 # leanpub-end-insert
 ~~~~~~~~
 
-The `Search` component stays untouched. As you have seen, the previous example was extended to facilitate the archiving of items in a list. Now, the `List` component receives all the necessary properties: an `onArchive()` callback function and the list, filtered by `query` and `archivedItems`. It only shows items filtered by the query from the `Search` component and items which are not archived.
+Компонент `Search` остается без изменений. Как вы видите, предыдущий пример был расширен для облегчения архивирования элементов в списке. Теперь компонент `List` получает все необходимые свойства: функцию обратного вызова `onArchive()` и список, отфильтрованный с помощью `query` и `archivedItems`. Он показывает только элементы, отфильтрованные по запросу из компонента «Поиск», и элементы, которые не были заархивированы.
 
-You might see already the flaw. The `SearchableList` takes care about the archiving functionality. However, it doesn't need the functionality itself. It only passes all the state to the `List` component as props. It manages the state on behalf of the `List` component. No other component cares about this state. In a scaling application, it would make sense to lift the state down to the `List` component, because only the `List` component cares about it and no other component has to manage it on the `List` component's behalf. Even though the `List` component becomes a stateful component afterward, it is step in the right direction keeping the local state maintainable in the long run. First, the enhanced stateful `List` component which takes care about the state:
+Вы уже можете увидеть недостаток. `SearchableList` заботится о функциональности архивирования. Тем не менее, он не нуждается в самой функциональности. Он только передает все состояния компоненту `List` как пропсы. Он управляет состоянием от имени компонента `List`. Никакой другой компонент не нуждается об этом состоянии. В масштабирующем приложении имеет смысл поднять состояние до компонента `List`, потому что только компонент `List` нуждается в этом состоянии, и никакой другой компонент не должен управлять им от имени компонента `List`. Несмотря на то, что компонент `List` станет компонентом с состоянием, это является шагом в правильном направлении, сохраняя локальное состояние поддерживаемым в долгосрочной перспективе. Для начала расширяем компонент `List` чтобы он начал управлять состоянием
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -328,7 +328,7 @@ class List extends React.Component {
 }
 ~~~~~~~~
 
-Second, the `SearchableList` component which only cares about the state from the previous example but not about the archived items anymore:
+Теперь компонент `SearchableList`, который заботится только о состоянии из предыдущего примера, но не о заархивированных элементах:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -368,17 +368,17 @@ class SearchableList extends React.Component {
 }
 ~~~~~~~~
 
-That's how you can lift state down. It is used to keep the state only next to component that care about the state. Let's recap both approaches. In the first example, the "Search a List"-example, the state had to be lifted up to share the `query` property in two child components. The `Search` component had to manipulate the state by using a callback function, but also had to use the `query` to be a controlled component regarding the input field. On the other hand, the `SearchableList` component had to filter the list by using the `query` property on behalf of the `List` component. Another solution would have been to pass down the `query` property to the `List` component and let the component deal with the filtering itself. After all, the state got lifted up the component tree to share it vertically across more components.
+Вот как вы можете поднять состояние. Сохранение состояния используется только компонентом, который нуждается в состоянии. Давайте вспомним оба подхода. В первом примере, например `Поиск в списке`, необходимо было поднять состояние, чтобы разделить свойство `query` с двумя дочерними компонентами. Компонент `Search` должен был манипулировать состоянием с помощью функции обратного вызова, но также должен был использовать` query`, чтобы быть контролируемым компонентом относительно поля ввода. С другой стороны, компоненту `SearchableList` пришлось отфильтровать список, используя свойство `query` от имени компонента `List`. Другим решением было бы передать свойство `query` компоненту` List` и позволить компоненту иметь дело с самой фильтрацией. В конце концов, состояние поднялось вверх по дереву компонентов, чтобы разделить его по вертикали между несколькими компонентами.
 
-In the second example, the "Archive in a List"-example, the state could be lifted down to keep the state maintainable in the long run. The parent component shouldn't be concerned about state that isn't used by the parent component itself and isn't shared across multiple child components. Because only one child component cared about the archived items, it was a good change to lift the state down to the only component which cares about the state. After all, the state got lifted down the component tree.
+Во втором примере, «Архив в списке», состояние может быть спущено, чтобы поддерживать состояние в долгосрочной перспективе. Родительский компонент не должен беспокоиться о состоянии, которое не используется самим родительским компонентом и не используется несколькими дочерними компонентами. Поскольку только один дочерний компонент заботился об архивированных элементах, было хорошим изменением поднять состояние до единственного компонента, который заботится о состоянии. В конце концов, состояние было удалено из дерева компонентов.
 
-In conclusion, lifting state allows you to keep your local state management maintainable. **Lifting state should be used to give components access to all the state they need, but not to more state than they need.** Sometimes you have to refactor components from a functional stateless component to a React ES6 class component or vice versa. It's not always possible, because a component that could become possibly a stateless functional component could still have other stateful properties.
+В заключение, подъем состояния позволяет вам поддерживать управление локальным состоянием. **Подъем состояние должен использоваться, чтобы предоставить компонентам доступ ко всему состоянию, в котором они нуждаются, но не к большему, чем им необходимо.** Иногда вам необходимо реорганизовать компоненты из функционального компонента без состояния в React компонент основанный на классах ES6 или наоборот. Это не всегда возможно, потому что компонент, который может стать функциональным компонентом без состояния, может иметь другие свойства с состоянием.
 
-### Functional State
+### Функциональное состояние
 
-In the recent chapters you have used `this.setState()` to alter the local state. However, there is a flaw in using `this.setState()` the way we did in the last chapters for certain use cases: It is important to know that `this.setState()` is executed asynchronously to update the local state. React batches all the state updates, because it executes them after each other for performance optimizations. Thus, the `this.setState()` method comes in two versions.
+В предыдущих главах вы использовали `this.setState()` для изменения локального состояния. Однако есть недостаток в использовании `this.setState()`, как мы это делали в прошлых главах для определенных случаев использования. Важно знать, что `this.setState()` выполняется асинхронно для обновления локального состояния. React упаковывает все обновления состояния, потом выполняет их друг за другом для оптимизации производительности. Таким образом, метод `this.setState()` работает в двух версиях.
 
-In its first version, the `this.setState()` method takes an object to update the state. As explained in a previous chapter, the merging of the object is a shallow merge. For instance, when updating `authors` in a state object of `authors` and `articles`, the `articles` stay intact. The previous examples have already used this approach:
+В первой версии метод `this.setState()` принимает объект для обновления состояния. Как объяснялось в предыдущей главе, слияние объекта является поверхностным слиянием. Например, при обновлении `авторы` в объекте состояния `авторы` и `статьи`, `статьи` остаются неизменными. Предыдущие примеры уже использовали этот подход:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -387,7 +387,7 @@ this.setState({
 });
 ~~~~~~~~
 
-In its second version, the `this.setState()` method takes a function as argument. The function has the previous state and props in the function signature to be used for the state update.
+Во второй версии метод this.setState () принимает функцию в качестве аргумента.У функция есть предыдущее состояние и пропсы в аргументах для обновления состояния.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -396,7 +396,7 @@ this.setState((prevState, props) => ({
 }));
 ~~~~~~~~
 
-So, what's the flaw in using `this.setState()` with an object? In several examples in the last chapters, the state was updated based on the previous state or props. However, `this.setState()` executes asynchronously. Thus the state or props that are used to perform the update could be stale at this point in time, because the state was updated more than once in between. It could lead to bugs in your local state management, because you would update the state based on stale properties. When using the functional approach to update the local state, the state and props are used when `this.setState()` performs asynchronously at the time of its execution. Let's revisit one of the previous examples:
+Итак, в чем заключается недостаток использования `this.setState()` с объектом? В нескольких примерах в последних главах состояние обновлялось на основе предыдущего состояния или пропса. Однако `this.setState()` выполняется асинхронно. Таким образом, состояние или пропсы, которые используются для выполнения обновления, могут быть устаревшими в данный момент времени, потому что состояние обновлялось более одного раза между ними. Это может привести к ошибкам в управлении локальным состоянием, потому что вы будете обновлять состояние на основе устаревших свойств. При использовании функционального подхода для обновления локального состояния, состояние и пропсы используются, когда `this.setState()` работает асинхронно во время его выполнения. Давайте вернемся к одному из предыдущих примеров:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -436,7 +436,7 @@ class CounterContainer extends React.Component {
 }
 ~~~~~~~~
 
-Executing one of the class methods, `onIncrement()` or `onDecrement()`, multiple times could lead to a bug. Because both methods depend on the previous state, it could use a stale state when the asynchronous update wasn't executed in between and the method got invoked another time.
+Выполнение одного из методов класса, `onIncrement()` или `onDecrement()`, несколько раз может привести к ошибке. Поскольку оба метода зависят от предыдущего состояния, он может использовать устаревшее состояние, когда между ними не было выполнено асинхронное обновление, а метод был вызван в другой раз.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -447,7 +447,7 @@ this.setState({ counter: this.state.counter + 1 }); // this.state: { counter: 0 
 // instead of: { counter: 3 }
 ~~~~~~~~
 
-It becomes even more error prone when multiple functions, such as `onIncrement()` and `onDecrement()`, that use `this.setState()` depend on the previous state. You can refactor the example to use the functional state updating approach:
+Это становится еще более подверженным ошибкам, когда несколько функций, таких как `onIncrement()` и `onDecrement()`, которые используют `this.setState()`, зависят от предыдущего состояния. Вы можете выполнить рефакторинг примера, чтобы использовать подход обновления функционального состояния:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -478,7 +478,7 @@ class CounterContainer extends React.Component {
 }
 ~~~~~~~~
 
-The functional approach opens up two more benefits. First, the function which is used in `this.setState()` is a pure function. There are no side-effects. The function always will return the same output (next state) when given the same input (previous state). It makes it predictable and uses the benefits of functional programming. Second, since the function is pure, it can be tested easily in an unit test and independently from the component. It gives you the opportunity to test your local state updates as business logic which is separated from the view layer. You only have to extract the function from the component.
+Функциональный подход открывает еще два преимущества. Во-первых, функция, которая используется в `this.setState()`, является чистой функцией. Там нет никаких побочных эффектов. Функция всегда будет возвращать один и тот же результат (следующее состояние), если даны одни и те же параметры (предыдущее состояние). Это делает его предсказуемым и использует преимущества функционального программирования. Во-вторых, поскольку функция является чистой, ее можно легко протестировать в модульном тесте и независимо от компонента. Это дает вам возможность протестировать обновления локального состояния как бизнес-логику, которая отделена от уровня представления. Вам нужно только извлечь функцию из компонента.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -515,15 +515,15 @@ class CounterContainer extends React.Component {
 }
 ~~~~~~~~
 
-Now, you could test the pure functions as business logic separately from the view layer. After all you may wonder when to use the object and when to use the function in `this.setState()`? The recommended rules of thumb are:
+Теперь вы можете протестировать чистые функции как бизнес-логику отдельно от уровня представления. В конце концов, вы можете задаться вопросом, когда использовать объект, а когда использовать функцию в `this.setState ()`? Рекомендуемые правила:
 
-* Always use `this.setState()` with a function when you depend on previous state or props.
-* Only use `this.setState()` with an object when you don't depend on previous properties.
-* In case of uncertainty, default to use `this.setState()` with a function.
+* Всегда используйте `this.setState()` с функцией, когда вы зависите от предыдущего состояния или реквизита.
+* Используйте `this.setState()`только с объектом, если вы не зависите от предыдущих свойств.
+* В случае неопределенности, по умолчанию используется `this.setState()`с функцией.
 
-### Higher-Order Components
+### Компоненты высшего порядка
 
-Higher-order components (HOCs) can be used for a handful of use cases. One of these use case would be to [enable an elegant way of conditional rendering](https://www.robinwieruch.de/gentle-introduction-higher-order-components/). But this book is about state management, so why not use it to manage the local state of a component? Let's revisit an adjusted example of the "Archive in a List"-example.
+Компоненты высшего порядка (HOC) могут применятся в нескольких вариантах использования. Одним из таких вариантов использования будет [элегантный способ условного рендеринга](https://www.robinwieruch.de/gentle-introduction-higher-order-components/). Но эта книга о управлении состоянием, так почему бы не использовать его для управления локальным состоянием компонента? Давайте вернемся к скорректированному примеру «Архив в списке».
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -584,7 +584,7 @@ function byArchived(archivedItems) {
 }
 ~~~~~~~~
 
-The `ArchiveableList` component has two purposes. On the one hand, it is a pure presenter component that shows the items in a list. On the other hand, it is stateful container component that keeps track of the archived items. Therefore, you could split this two responsibilities up into representation and logic thus into presentational and container component. It would be the same refactoring you have done before with the `CounterContainer` and `CounterPresenter` components. However, another approach could be to transfer the logic, in this case the local state management, into a higher-order component. Higher-order components are reusable and thus the local state management could become reusable for many components but not only one.
+Компонент `ArchiveableList` имеет две цели. С одной стороны, это чистый компонент представления, который показывает элементы в списке. С другой стороны, это компонент контейнера с отслеживанием состояния, который отслеживает заархивированные элементы. Следовательно, вы можете разделить эти две обязанности на представление и логику, таким образом, на компонент представления и компонент контейнера. Это будет тот же рефакторинг, который вы делали ранее с компонентами `CounterContainer` и `CounterPresenter`. Однако другой подход может заключаться в том, чтобы перевести логику, в данном случае управление локальным состоянием, в компонент высшего порядка. Компоненты высшего порядка можно использовать повторно, и, таким образом, локальное управление состоянием может стать многоразовым для многих компонентов, а не только для одного.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -634,7 +634,7 @@ function withArchive(Component) {
 }
 ~~~~~~~~
 
-In return the `List` component would only display the list and receives a function in its props to archive an item.
+В свою очередь, компонент `List` отображает только список и получает функцию в свой пропс для архивирования элемента.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -661,7 +661,7 @@ function List({ list, onArchive }) {
 }
 ~~~~~~~~
 
-Now you can compose the list facilitating component with the functionality to archive items in a list.
+Теперь вы можете составить облегчающий работу со списком компонент с возможностью архивирования элементов в списке.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -680,23 +680,23 @@ function App({ list }) {
 }
 ~~~~~~~~
 
-The `List` component would only display the items. The ability to archive an item in the `List` component would be opt-in with a higher-order component called `withArchive`. In addition, the HOC can be reused in other `List` components too for managing the state of archived items. After all, higher-order components are great to extract local state management from components and to reuse the local state management logic in other components.
+Компонент `List` будет отображать только элементы. Возможность архивирования элемента в компоненте `List` будет включена компонентом высшего порядка, который называется `withArchive`. Кроме того, HOC также может быть повторно использован в других компонентах `List` для управления состоянием заархивированных элементов. В конце концов, компоненты высшего порядка отлично подходят для извлечения управления локальных состояний из компонентов и повторного использования логики управления локальными состояниями в других компонентах.
 
-### React's Context for Provider and Consumer
+### Постащики и потребители контекста в React
 
-The context API is a powerful feature in React. You will not often see it when using plain React, but might consider using it when your React application grows in size and depth from a component perspective. Basically, React's context API takes the clutter away of passing mandatory props, that are needed by every component, down your whole component tree. Most often components in between are not interested in these props.
+Контекстный API является мощной особенностью в React. Вы не часто будете видеть это при использовании простого React, но можете рассмотреть возможность его использования, когда ваше приложение React увеличивается в размере и глубине с точки зрения компонента. По сути, контекстный API React устраняет беспорядок передачи обязательных пропсов, необходимых каждому компоненту, по всему дереву компонентов. Чаще всего промежуточные компоненты не интересуются этими пропсами.
 
-But you will not only see it when using plain React. Often React's context API can be seen in action when using an external state management library such as Redux or MobX. There, you often end up with a `Provider` component at the top of your component hierarchy that bridges your state layer (Redux/MobX/...) to your view layer (React). The `Provider` component receives the state as props and afterward, each child component has implicitly access to the managed state by Redux and MobX.
+Но вы увидите это не только при использовании просто React. Чаще контекстный API React можно увидеть в действии при использовании внешней библиотеки управления состоянием, такой как Redux или MobX. Там вы часто получаете компонент `Provider` в верхней части иерархии компонентов, который связывает ваш уровень состояния (Redux / MobX / ...) с вашим уровнем представления (React). Компонент `Provider` получает состояние в качестве пропса, а после этого каждый дочерний компонент имеет неявный доступ к управляемому состоянию через Redux и MobX.
 
-Do you remember the last time when you had to pass props several components down your component tree? In plain React, you can be confronted often with this issue which is called "prop drilling". It can happen that a couple of these props are even mandatory for each child component. Thus you would need to pass the props down to each child component. In return, this would clutter every component in between which has to pass down these props without using them oneself.
+Вы помните последний раз, когда вам приходилось прокидвать пропсы нескольких компонентов вниз по дереву компонентов? В простом React, вы можете часто сталкиваются с этой проблемой, которая называется «бурением пропсами». Может случиться, что пара этих пропсов даже обязательна для каждого дочернего компонента. Таким образом, вам нужно будет передать пропсы каждому дочернему компоненту. В свою очередь это загромождает каждый промежуточный компонент, который должен передавать эти пропсы, не используя их самостоятельно.
 
-When these props become mandatory, React's context API gives you a way out of this mess. Instead of passing down the props explicitly down to each component, you can hide props, that are necessary for each component, in React's context and pass them implicitly down to each component. React's context traverses invisible down the component tree. If a component needs access to the context, it can consume it on demand.
+Когда эти пропсы становятся обязательными, контекстный API React дает вам выход из этого беспорядка. Вместо того, чтобы явно передавать пропсы вниз каждому компоненту, вы можете скрыть пропсы, необходимые для каждого компонента, в контексте React и неявно передавать их вниз каждому компоненту. Контексты React невидимы по дереву компонентов. Если компоненту нужен доступ к контексту, он может получить его по требованию.
 
-What are use cases for this approach? For instance, your application could have a configurable colored theme. Each component should be colored depending on the configuration. The configuration is fetched once from your server, but afterward you want to make this implicitly accessible for all components. Therefore you could use React's context API to give every component access to the colored theme. You would have to provide the colored theme at the top of your component hierarchy and consume it in every component which is located somewhere below it.
+Каковы варианты использования для этого подхода? Например, ваше приложение может иметь настраиваемую цветную тему. Каждый компонент должен быть окрашен в зависимости от конфигурации. Конфигурация выбирается один раз с вашего сервера, но затем вы хотите сделать ее неявно доступной для всех компонентов. Поэтому вы можете использовать контекстный API React, чтобы предоставить каждому компоненту доступ к цветной теме. Вы должны будете предоставить цветную тему в верхней части иерархии компонентов и использовать ее в каждом компоненте, который находится где-то под ней.
 
-How is React's context provided and consumed? Imagine you would have component A as root component that provides the context and component C as one of the child components that consumes the context. Somewhere in between is component D though. The application has a colored theme that can be used to style your components. Your goal is it to make the colored theme available for every component via the React context. In this case, component C should be able to consume it.
+Каковы варианты использования для этого подхода? Например, ваше приложение может иметь настраиваемую цветную тему. Каждый компонент должен быть окрашен в зависимости от конфигурации. Конфигурация выбирается один раз с вашего сервера, но затем вы хотите сделать ее неявно доступной для всех компонентов. Поэтому вы можете использовать контекстный API React, чтобы предоставить каждому компоненту доступ к цветной теме. Вы должны будете предоставить цветную тему в верхней части иерархии компонентов и использовать ее в каждом компоненте, который находится где-то под ней.
 
-First, you have to create the context which gives you access to a Provider and Consumer component. When you create the context with React by using `createContext()`, you can pass it an initial value. In this case, the initial value can be null, because you may have no access to the initial value at this point in time. Otherwise, you can already give it here a proper initial value.
+Во-первых, вы должны создать контекст, который дает вам доступ к компоненту Provider и Consumer. Когда вы создаете контекст с помощью React с помощью `createContext()`, вы можете передать ему начальное значение. Начальное значение может быть нулевым, поскольку у вас может не быть доступа к начальному значению в данный момент времени. В противном случае вы уже можете указать начальное значение.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -707,7 +707,7 @@ const ThemeContext = React.createContext(null);
 export default ThemeContext;
 ~~~~~~~~
 
-Second, the A component would have to provide the context. It is a hardcoded `value` in this case, but it can be anything from component state or component props. The context value may change as well when the local state is changed due to a `setState()` call. Component A displays only component D yet makes the context available to all its other components below it. One of the leaf components will be component C that consumes the context eventually.
+Во-вторых, компонент А должен обеспечивать контекст. В данном случае это жестко закодированное значение `value`, но это может быть что угодно из состояния или пропса компонента. Значение контекста также может измениться при изменении локального состояния из-за вызова `setState()`. Компонент A отображает только компонент D, но делает контекст доступным для всех остальных его компонентов ниже. Одним из конечных компонентов будет компонент C, который в конечном итоге использует контекст.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -724,7 +724,7 @@ class A extends React.Component {
 }
 ~~~~~~~~
 
-Third, in your component C, somewhere below component D, you can consume the context object. Notice that component A doesn’t need to pass down anything via component D in the props so that it reaches component C.
+В-третьих, в вашем компоненте C, где-то ниже компонента D, вы можете использовать объект контекста. Обратите внимание, что компоненту A не нужно ничего передавать через компонент D в пропсах, чтобы он достиг компонента C.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -745,6 +745,6 @@ class C extends React.Component {
 }
 ~~~~~~~~
 
-The component can derive its style by consuming the context. The Consumer component makes the passed context available by using a [render prop](https://reactjs.org/docs/render-props.html). As you can imagine, following this way every component that needs to be styled accordingly to the colored theme could get the necessary information from React's context API by using the Consumer component now. You only have to use the Provider component which passes the value once somewhere above them and then consume it with the Consumer component. You can read more about [React's context API in the official documentation](https://reactjs.org/docs/context.html).
+Компонент может получить свой стиль, используя контекст. Компонент Consumer делает передаваемый контекст доступным с помощью [рендер-пропсов](https://reactjs.org/docs/render-props.html). Как вы можете себе представить, следуя этому пути, каждый компонент, который должен быть стилизован в соответствии с цветной темой, может получить необходимую информацию из контекстного API React, используя компонент Consumer. Вам нужно только использовать компонент Provider, который передает значение один раз где-то над ними, а затем использует его вместе с компонентом Consumer. Вы можете прочитать больше о [контекстном API React в официальной документации](https://reactjs.org/docs/context.html).
 
-That’s basically it for React's context API. You have one Provider component that makes properties accessible in React’s context and components that consume the context by using the Consumer component. How does this relate to state management? Basically the pattern, also called provider pattern, is often applied, when using a sophisticated state management solution that makes the state object(s) accessible in your view layer via React's context. Thus the whole state can be accessed in each component. Perhaps you will never implement the provider pattern yourself, but you will most likely use it in a sophisticated state management solution such as Redux or MobX later on. So keep it in mind. Otherwise, React's context can be used to store a state object itself. It can be used when the state is shared globally in your React application, but you don't want to introduce Redux or MobX yet.
+Это основы для контекстного API React. У вас есть один компонент Provider, который делает свойства доступными в контексте React, и компоненты, которые используют контекст с помощью компонента Consumer. Как это относится к управлению состоянием? В основном этот подход, также называемый шаблоном поставщика, часто применяется, когда используется сложное решение для управления состоянием, которое делает объект(ы) состояния доступным на вашем уровне представления через контекст React. Таким образом, все состояние может быть доступно в каждом компоненте. Возможно, вы никогда не будете реализовывать шаблон поставщика самостоятельно, но, скорее всего, позже вы будете использовать его в сложном решении для управления состоянием, таком как Redux или MobX. Так что имейте это в виду. В противном случае контекст React может использоваться для хранения самого объекта состояния. Его можно использовать, когда состояние используется глобально в вашем приложении React, но вы пока не хотите вводить Redux или MobX.
