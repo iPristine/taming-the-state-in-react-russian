@@ -1,21 +1,21 @@
-## Basics in Redux
+## Основы Redux
 
-On the [official Redux website](http://redux.js.org) it says: *"Redux is a predictable state container for JavaScript apps."*. It can be used standalone or in connection with with libraries, like React and Angular, to manage state in JavaScript applications.
+На [официальном сайте Redux](http://redux.js.org) говорится: *"Redux - это предсказуемый контейнер состояний для JavaScript приложений."*. Он может использоваться автономно или совместно с библиотеками, такими как React и Angular, для управления состоянием в JavaScript приложениях.
 
-Redux adopted a handful of constraints from the Flux architecture but not all of them. It has Actions that encapsulate information for the actual state update. It has a Store to save the state, too. However, the Store is a singleton. Thus, there are not multiple Stores like there used to be in the Flux architecture. In addition, there is no single Dispatcher. Instead, Redux uses multiple Reducers. Basically, Reducers pick up the information from Actions and "reduce" the information to a new state, along with the old state, that is stored in the Store. When state in the Store is changed, the View can act on this by subscribing to the Store.
+Redux принял несколько ограничений из архитектуры Flux, но не все из них. Он имеет Actions (действия), которые инкапсулируют информацию для актуального обновления состояния. У него есть Store (хранилище), чтобы чтобы сохранять состояние. Store (хранилище) имеется в единственном числе. Таким образом, не существует нескольких Stores (хранилищ), как это было в архитектуре Flux. Кроме того, нет единого Dispatcher (диспетчера). Вместо этого Redux использует несколько Reducers (редукторов). По сути, Reducers (редукторы) получают информацию из действий и «переводят» информацию в новое состояние вместе со старым состоянием, которое хранится в Store (хранилище). Когда состояние в Store (хранилище) изменяется, View (представление) может действовать, подписавшись на Store (хранилище).
 
 {title="Concept Playground",lang="text"}
 ~~~~~~~~
 View -> Action -> Reducer(s) -> Store -> View
 ~~~~~~~~
 
-So why is it called Redux? Because it combines the two words Reducer and Flux. The abstract picture of Redux should be imaginable now. The state doesn't live in the View anymore, it is only connected to the View. What does connected mean? It is connected on two ends, because it is part of the unidirectional data flow. One end is responsible to trigger an Action to which updates the state eventually and the second end is responsible to receive the state from the Store. Therefore, the View can update according to state changes and can trigger state changes. The View, in this case, would be React, but Redux can be used with any other library or standalone as well. After all, it is only a state management container.
+Так почему он называется Redux? Потому что он сочетает в себе два слова Reducer и Flux. Абстрактная картина Redux должна быть понятна сейчас. Состояние больше не живет во View (представлении), оно только связано с View (представлением). Что значит связанный? Он связан на двух концах, поскольку является частью однонаправленного потока данных. Один конец отвечает за запуск Action (действия), которое в конечном итоге обновляет состояние, а второй - за получение состояния из Store (хранилища). Следовательно, View (представление) может обновляться в соответствии с изменениями состояния и может вызывать изменения состояния. В этом случае View (представлением) будет React, но Redux можно использовать с любой другой библиотекой или автономно. В конце концов, это всего лишь контейнер управления состоянием.
 
-### Action(s)
+### Action(s) Действие(я)
 
-An action in Redux is a JavaScript object. It has a type and an optional payload. The type is often referred to as **action type**. While the type is a string literal, the payload can be anything from a string to an object.
+Действие в Redux - это JavaScript объект. У него есть тип и дополнительная полезная нагрузка. Тип часто называют **типом действия**. В то время как тип является строковым литералом, полезная нагрузка может быть любой, от строки до объекта.
 
-In the beginning your playground to get to know Redux will be a Todo application. For instance, the following action in this application can be used to add a new todo item:
+В начале вашим примером, чтобы познакомиться с Redux, будет приложение Todo. Например, следующее действие в этом приложении можно использовать для добавления нового элемента:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -25,18 +25,18 @@ In the beginning your playground to get to know Redux will be a Todo application
 }
 ~~~~~~~~
 
-Executing an action is called **dispatching** in Redux. You can dispatch an action to alter the state in the Redux store. You only dispatch an action when you want to change the state. The dispatching of an action can be triggered in your view layer. It could be as simple as a click on a HTML button. In addition, the payload in a Redux action is not mandatory. You can define actions that have only an action type. That subject will be revisited later in the book. In the end, once an action is dispatched, it will go through all reducers in Redux.
+Выполнение действия называется **диспетчеризация** в Redux. Вы можете отправить действие для изменения состояния в хранилище Redux. Вы отправляете действие только тогда, когда хотите изменить состояние. Отправка действия может быть запущена в вашем слое представления. Это может быть так просто, как нажатие на кнопку HTML. Кроме того, полезная нагрузка в действии Redux не является обязательной. Вы можете определить действия, которые имеют только тип действия. Эта тема будет рассмотрена позже в книге. В конце концов, когда действие отправляется, оно проходит через все редукторы в Redux.
 
-### Reducer(s)
+### Редуктор(ы)
 
-A reducer is the next part in the chain of the unidirectional data flow. The view dispatches an action and the action object, with action type and optional payload, will pass through all reducers. What's a reducer? A reducer is a pure function. It always produces the same output when the input stays the same. It has no side-effects, thus it is only an input/output operation. A reducer has two inputs: state and action. The state is always the whole state object from the Redux store. The action is the dispatched action with a type and an optional payload. The reducer reduces - that explains the naming - the previous state and incoming action to a new state.
+Редуктор - это следующая часть в цепочке однонаправленного потока данных. Представление отправляет действие, и объект действия с типом действия и необязательной полезной нагрузкой будет проходить через все редукторы. Что такое редуктор? Редуктор - это чистая функция. Он всегда выдает один и тот же результат, пока входные данные остается неизменными. У него нет побочных эффектов, поэтому это всего лишь операция ввода/вывода. Редуктор имеет два входящих параметра: состояние и действие. Состояние - это всегда весь объект состояния из хранилища Redux. Действие - это отправленное действие с типом и необязательной полезной нагрузкой. Редуктор сокращает - что объясняет наименование - предыдущее состояние и входящее действие до нового состояния.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
 (prevState, action) => newState
 ~~~~~~~~
 
-Apart from the functional programming principle, namely that a reducer is a pure function without side-effects, it also embraces immutable data structures. It always returns a `newState` object without mutating the incoming `prevState` object. Thus, the following reducer, where the state of the Todo application is a list of todos, is not an allowed reducer function:
+Помимо принципа функционального программирования, а именно того, что редуктор является чистой функцией без побочных эффектов, он также охватывает неизменяемость структуры данных. Он всегда возвращает объект `newState` без изменения входящего объекта `prevState`. Таким образом, следующий редуктор, в котором состояние приложения Todo представляет собой список задач, не является разрешенной функцией редуктора:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -46,7 +46,7 @@ function(state, action) {
 }
 ~~~~~~~~
 
-It would mutate the previous state instead of returning a new state object. The following is allowed because it keeps the previous state intact:
+Это изменило бы предыдущее состояние вместо возврата нового объекта состояния. Следующее допустимо, потому что оно сохраняет предыдущее состояние без изменений:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -55,11 +55,11 @@ function reducer(state, action) {
 }
 ~~~~~~~~
 
-By using the [JavaScript built-in concat functionality](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/concat), the state and thus the list of todos is concatenated to another item. The other item is the newly added todo from the action. You might wonder if this embraces immutability now. Yes it does, because `concat` always returns a new array without mutating the old array. The data structure stays immutable. You will learn more about how to keep your data structures immutable later in this book.
+Используя [встроенную в JavaScript функциональность concat](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/concat), состояние и, следовательно, список задач объединяются в другой элемент. Другой элемент - это недавно добавленная задача из действия. Вы можете задаться вопросом, охватывает ли это неизменность сейчас. Да, это так, потому что `concat` всегда возвращает новый массив, не изменяя старый. Структура данных остается неизменной. Вы узнаете больше о том, как сохранить ваши структуры данных неизменяемыми позже.
 
-**But what about the action type?** Right now, only the payload is used to produce a new state but the action type is ignored. So what can you do about the action type? Basically when an action object arrives at the reducers, the action type can be evaluated. Only when a reducer cares about the action type, it will produce a new state. Otherwise, it simply returns the previous state. In JavaScript, a switch case can help to evaluate different action types. Otherwise, it returns the previous state as default.
+**А как насчет типа действия?** Пока что только полезная нагрузка используется для создания нового состояния, а тип действия игнорируется. Так что вы можете сделать с типом действия? В основе, когда объект действия прибывает в редукторы, тип действия может быть решающим. Только когда редуктор нуждается в типе действия, он создает новое состояние. В противном случае он просто возвращает предыдущее состояние. В JavaScript инструкция switch может помочь оценить различные типы действий. В противном случае он возвращает предыдущее состояние по умолчанию.
 
-Imagine your Todo application would have a second action that toggles a Todo to either completed or incomplete. The only information which is needed as payload is an identifier to identify the Todo in the state.
+Представьте, что ваше приложение Todo будет иметь второе действие, которое переключает задание либо в завершенное, либо в незавершенное. Единственной информацией, которая необходима в качестве полезной нагрузки, является идентификатор для идентификации задания в состоянии.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -69,7 +69,7 @@ Imagine your Todo application would have a second action that toggles a Todo to 
 }
 ~~~~~~~~
 
-The reducer would have to act on two actions now: `TODO_ADD` and `TODO_TOGGLE`. By using a switch case statement, you can branch into different cases. If there is not such a case, you return the unchanged state by default.
+Теперь редуктор должен будет выполнить два действия: `TODO_ADD` и `TODO_TOGGLE`. Используя инструкцию switch, вы можете переходить в разные случаи. Если нет подходящего случая, вы возвращаете неизмененное состояние по умолчанию.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -86,7 +86,7 @@ function reducer(state, action) {
 }
 ~~~~~~~~
 
-The book already discussed the `TODO_ADD` action type and its functionality. It simply concats a new todo item to the previous list of todo items. But what about the `TODO_TOGGLE` functionality?
+В книге уже обсуждались тип действия `TODO_ADD` и его функциональность. Он просто объединяет новый элемент todo с предыдущим списком элементов todo. Но как насчет функциональности `TODO_TOGGLE`?
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -111,13 +111,13 @@ function reducer(state, action) {
 }
 ~~~~~~~~
 
-In the example, the built-in JavaScript functionality `map` is used to map over the state, the list of todos, to either return the intact todo or return the toggled todo. The toggled todo is identified by its `id` property. The [JavaScript built-in functionality map](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map) always returns a new array. It doesn't mutate the previous state and thus the state of todos stays immutable and can be returned as a new state.
+В этом примере встроенный метод JavaScript `map` используется для отображения состояния, списка задач, для возврата неизмененного задания или возврата переключенного задания. Переключаемая задача идентифицируется по свойству `id`. [Встроенный метод JavaScript map](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map) всегда возвращает новый массив. Он не изменяет предыдущее состояние, и, таким образом, состояние задач остается неизменным и может быть возвращено как новое состояние.
 
-But isn't the toggled todo mutated? No, because `Object.assign()` returns a new object without mutating the old object. `Object.assign()` merges all given objects from the former to the latter into each other. If a former object shares the same property as a latter object, the property of the latter object will be used. Thus, the `completed` property of the updated todo item will be the negated state of the old todo item.
+Но разве переключенный todo не мутировал? Нет, потому что `Object.assign()` возвращает новый объект без изменения старого объекта. `Object.assign()` объединяет все данные объекты от первого до последнего друг в друга. Если первый объект имеет то же свойство, что и последний объект, будет использоваться свойство последнего объекта. Таким образом, свойство `completed` обновленного элемента todo будет отрицательным состоянием старого элемента todo.
 
-Note that these functionalities, actions and reducer, are plain JavaScript. There is no function from the Redux library involved so far. There is no hidden library magic. It is plain JavaScript with functional programming principles in mind.
+Обратите внимание, что эти функции - действия и редуктор чистый JavaScript. Пока не задействована ни одна функция из библиотеки Redux. Нет скрытой библиотечной магии. Это простой JavaScript с принципами функционального программирования.
 
-There is one useful thing to know about the current reducer: It has grown in size that makes it less maintainable. In order to keep reducers tidy, often the different switch case branches are extracted as pure functions:
+Стоит знать одна вещь о текущем редукторе: он увеличился в размерах, что делает его менее поддерживаемым. Для поддержания чистоты редукторов часто различные ветви инструкции switch извлекаются как чистые функции:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -152,42 +152,42 @@ function applyToggleTodo(state, action) {
 # leanpub-end-insert
 ~~~~~~~~
 
-In the end, the Todo application has two actions and one reducer by now. One last part in the Redux setup is missing: the Store.
+В конце концов, приложение Todo теперь имеет два действия и один редуктор. Остается последняя часть в структуре Redux: Хранилище (Store).
 
-### Store
+### Хранилище (Store)
 
-So far, the Todo application has a way to trigger state updates (actions) and a way to reduce the previous state and action to a new state (reducer). But no one is responsible to glue these parts together.
+До сих пор в приложении Todo был способ инициировать обновления состояния (действия) и способ привести предыдущее состояние и действие к новому состоянию (редуктор). Но никто не склеивал эти части вместе.
 
-* Who delegates the actions to the reducer?
-* Who triggers actions?
-* And finally: Where do I get the updated state to glue it to my View?
+* Кто делегирует действия редуктору?
+* Кто запускает действия?
+* И, наконец, где я могу получить обновленное состояние, чтобы связать его с моим видом?
 
-It is the Redux store. The store holds one global state object. There are no multiple stores and no multiple states. The store is only one instance in your application. In addition, it is the first library dependency you encounter when using Redux. Therefore, use the import statement to get the functionality to create the `store` object from the Redux library.
+Это хранилище Redux. Хранилище содержит один глобальный объект состояния. Здесь нет нескольких хранилищ и нет нескольких состояний. Хранилище есть в единственном экземпляре в вашем приложении. Кроме того, это первая библиотечная зависимость, с которой вы сталкиваетесь при использовании Redux. Поэтому используйте оператор import, чтобы получить функциональность для создания объекта `store` из библиотеки Redux.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
 import { createStore } from 'redux';
 ~~~~~~~~
 
-Now you can use it to create a store singleton instance. The `createStore` function takes one mandatory argument: a reducer. You already defined a reducer in the Reducer chapter which adds and completes todo items.
+Теперь вы можете использовать его для создания единственного экземпляра хранилища. Функция `createStore` принимает один обязательный аргумент: редуктор. Вы уже определили редуктор в главе «Редуктор», который добавляет и дополняет элементы задач.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
 const store = createStore(reducer);
 ~~~~~~~~
 
-In addition, the `createStore` takes a second optional argument: the initial state. In the case of the Todo application, the reducer operated on a list of todos as state. The list of todo items should be initialized as an empty array or pre-filled array with todos. If it wasn't initialized, the reducer would fail because it would operate on an `undefined` argument.
+Кроме того, `createStore` принимает второй необязательный аргумент: начальное состояние. В случае приложения Todo редуктор работал со списком задач в качестве состояния. Список элементов задач должен быть инициализирован как пустой массив или предварительно заполненный массив с задачами. Если он не был инициализирован, редуктор потерпит неудачу, потому что он будет работать с аргументом `undefined`.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
 const store = createStore(reducer, []);
 ~~~~~~~~
 
-In another chapter, the book will showcase another way to initialize state in Redux. Then you will use the reducer instead of the store to initialize state on a more fine-grained level.
+В другой главе книга продемонстрирует еще один способ инициализации состояния в Redux. Затем вы будете использовать редуктор вместо хранилища, чтобы инициализировать состояние на более детальном уровне.
 
-Now you have a store instance that knows about the reducer. The Redux setup is done. However, the essential part is missing: You want to interact with the store. You want to dispatch actions to alter the state, get the state from the store and listen to updates of the state in the store.
+Теперь у вас есть экземпляр хранилища, который знает о редукторе. Настройка Redux завершена. Однако важная часть отсутствует: вы хотите взаимодействовать с хранилищем. Вы хотите отправлять действия по изменению состояния, получать состояние из хранилища и прослушивать обновления состояния в хранилище.
 
-So first, how to dispatch an action?
+Итак, первое, как отправить действие?
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -197,14 +197,14 @@ store.dispatch({
 });
 ~~~~~~~~
 
-Second: How to get the global state from the store?
+Второе: как получить глобальное состояние из хранилища?
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
 store.getState();
 ~~~~~~~~
 
-And third, how to subscribe (and unsubscribe) to the store in order to listen (and unlisten) for updates?
+И третье, как подписаться (и отписаться) на обновления хранилища, чтобы отслеживать (и не нет) обновления?
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -215,18 +215,18 @@ const unsubscribe = store.subscribe(() => {
 unsubscribe();
 ~~~~~~~~
 
-That's all to it. The Redux store has only a slim API to access the state, update it and listen for updates. It is one of the essential constraints which made Redux so successful.
+Вот и все. Хранилище Redux имеет только небольшой API для доступа к состоянию, обновления и прослушивания обновлений. Это одно из существенных ограничений, которые сделали Redux таким успешным.
 
-### Hands On: Redux Standalone
+### Практика: Redux
 
-You know about all the basics in Redux now. A view dispatches an action on the store, the action passes all reducers and gets reduced by reducers that care about it. The store saves the new state object. Finally, a listener updates the view with the new state.
+Теперь вы знаете обо всех основах Redux. Представление отправляет действие в хранилище, оно пропускает все редукторы и уменьшается редукторами, которые заботятся о нем. Хранилище сохраняет новый объект состояния. Наконец, слушатель обновляет представление новым состоянием.
 
 {title="Concept Playground",lang="text"}
 ~~~~~~~~
-View -> Action -> Reducer(s) -> Store -> View
+Представление (View) -> Действие (Action) -> Редутор(ы) (Reducer(s)) -> Хранилище (Store) -> Представление (View)
 ~~~~~~~~
 
-Let's apply these learnings. You can either use your own project where you have JavaScript, JavaScript ES6 features enabled and Redux, or you can open up the following JS Bin: [Redux Playground](https://jsbin.com/zukogaj/2/edit?html,js,console). Now you are going to apply your learnings about actions, reducers, and the store from the last chapter. First, you can define your reducer that deals with adding and toggling todo items:
+Давайте применим эти знания. Вы можете использовать свой собственный проект, в котором включены JavaScript, функции JavaScript ES6 и Redux, или открыть этот JS Bin: [Redux Playground](https://jsbin.com/zukogaj/2/edit?html,js,console). Теперь вы можете применить свои знания о действиях, редукторах и магазине из последней главы. Во-первых, вы можете определить свой редуктор, который занимается добавлением и переключением элементов todo:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -255,14 +255,14 @@ function applyToggleTodo(state, action) {
 }
 ~~~~~~~~
 
-Second, you can initialize the Redux store that uses the reducer and an initial state. In the JS Bin you have Redux available as global variable.
+Во-вторых, вы можете инициализировать хранилище Redux, которое использует редуктор и исходное состояние. В JS Bin у вас есть Redux, доступный как глобальная переменная.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
 const store = Redux.createStore(reducer, []);
 ~~~~~~~~
 
-If you are in your own project, you might be able to import the `createStore` from the Redux library:
+Если вы находитесь в своем собственном проекте, вы можете импортировать `createStore` из библиотеки Redux:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -271,7 +271,7 @@ import { createStore } from 'redux';
 const store = createStore(reducer, []);
 ~~~~~~~~
 
-Third, you can dispatch your first action on the store.
+В-третьих, вы можете отправить свое первое действие в хранилище.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -281,14 +281,14 @@ store.dispatch({
 });
 ~~~~~~~~
 
-That's it. You have set up all parts of Redux and interacted with it by using an action. You can retrieve the state by getting it from the store now.
+Вот и все. Вы настроили все части Redux и взаимодействовали с ним с помощью действия. Вы можете извлечь состояние, получив его из хранилища.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
 console.log(store.getState());
 ~~~~~~~~
 
-But rather than outputting it manually, you can subscribe a callback function to the store to output the latest state after it has changed. Make sure to subscribe to the store before dispatching your actions in order to get the output.
+Но вместо того, чтобы выводить его вручную, вы можете подписать функцию обратного вызова в хранилище, чтобы вывести последнее состояние после его изменения. Не забудьте подписаться на хранилище, прежде чем отправлять свои действия, чтобы получить вывод.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -297,13 +297,13 @@ const unsubscribe = store.subscribe(() => {
 });
 ~~~~~~~~
 
-Now, whenever you dispatch an action, after the state got updated, the store subscription should become active by outputting your current state. Don't forget to unsubscribe eventually to avoid memory leaks.
+Теперь, когда вы отправляете действие, после того, как состояние обновлено, подписка на хранилище должна стать активной после вывода вашего текущего состояния. Не забудьте отписаться, чтобы избежать утечек памяти.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
 unsubscribe();
 ~~~~~~~~
 
-A finished application can be found [in this JS Bin](https://jsbin.com/kopohur/28/edit?html,js,console). Before you continue to read, you should experiment with the project. What you see in the project is plain JavaScript with a Redux store. You can come up with more actions and deal with them in your reducer. The application should make you aware that Redux is only a state container. The state can be altered by using actions. The reducer take care of the action. It uses the action and the old state to create a new state in the Redux store.
+Готовое приложение можно найти [в этом примере JS Bin](https://jsbin.com/kopohur/28/edit?html,js,console). Прежде чем продолжить чтение, вы должны поэкспериментировать с проектом. То, что вы видите в проекте - это чистый JavaScript с хранилищем Redux. Вы можете придумывать больше действий и разбираться с ними в своем редукторе. Приложение должно вам понимание того, что Redux является только контейнером состояний. Состояние может быть изменено с помощью действий. Редуктор позаботится о своем действии. Он использует действие и старое состояние для создания нового состояния в хранилище Redux.
 
-Later you will learn about how to to connect the Redux store to your React view layer. But before doing so, let's dive into actions and reducers a bit deeper.
+Позже вы узнаете, как подключить хранилище Redux к вашему слою представления React. Но перед этим давайте углубимся в действия и редукторы.
