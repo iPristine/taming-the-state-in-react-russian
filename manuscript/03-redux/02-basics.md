@@ -76,10 +76,10 @@ function reducer(state, action) {
 function reducer(state, action) {
   switch(action.type) {
     case 'TODO_ADD' : {
-      // do something and return new state
+      // выполнить произвольный код и вернуть состояние
     }
     case 'TODO_TOGGLE' : {
-      // do something and return new state
+      // выполнить произвольный код и вернуть состояние
     }
     default : return state;
   }

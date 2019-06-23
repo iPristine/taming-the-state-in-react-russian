@@ -1,10 +1,10 @@
-## Advanced Actions
+## Продвинутые действия
 
-You have learned about actions in a previous chapter. However, there are more fine-grained details that I want to cover in this chapter. The same applies for reducers. Both concepts will be covered in the following chapters in more detail. Therefore, it would be a requirement that you feel confident with the learnings from the previous chapter. Not all of the following learnings are mandatory to write applications in Redux, but they teach best practices and common usage patterns. In a larger sized application, you would want to know about these topics.
+Вы узнали о действиях в предыдущей главе. Однако есть более мелкие детали, которые я хочу осветить в этой главе. То же самое относится и к редукторам. Обе концепции будут рассмотрены в следующих главах более подробно. Поэтому требуется, чтобы вы чувствовали себя уверенно в отношении уроков из предыдущей главы. Не все следующие уроки являются обязательными для написания приложений с Redux, но они учат передовым методам и распространенным шаблонам использования. При разработке приложении большего размера вы хотели бы знать об этих темах.
 
-### Minimum Action Payload
+### Минимальная полезная нагрузка действия
 
-Do you recall the action from a previous chapter that added a todo item? It was something like the following:
+Вы помните действие из предыдущей главы, в которой был добавлен элемент todo? Это было что-то вроде следующего:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -14,11 +14,11 @@ Do you recall the action from a previous chapter that added a todo item? It was 
 }
 ~~~~~~~~
 
-As you can see, the `completed` property is defined as false boolean. In addition, you saw that the action and reducer from the previous chapter did work under these circumstances. However, a rule of thumb in Redux is to keep the action payload to a minimum.
+Как видите, свойство `completed` определено как ложное логическое значение. Кроме того, вы видели, что действие и редуктор из предыдущей главы работали при этих условиях. Однако в Redux практическое правило сводить полезную нагрузку к минимуму.
 
-In the example, when you want to add a todo in a Todo application, it would need at least the unique identifier and a name of a todo. But the `completed` property is unnecessary. The assumption is that every todo that is added to the store will be incomplete in the beginning. It wouldn't make sense in a Todo application to add completed todos, would it? Therefore, not the action would take care of the `completed` property but the reducer.
+В этом примере, когда вы хотите добавить задачу в приложение Todo, ему потребуется как минимум уникальный идентификатор и имя задачи. Но свойство `completed` не нужно. Предполагается, что все задачи, добавленные в магазин, будут неполными в начале. В приложении Todo не имеет смысла добавлять завершенные задачи, не так ли? Следовательно, не действие будет заботиться о свойстве `completed`, а редуктор.
 
-Instead of simply passing the whole todo object from the action into the list of todos in your reducer function:
+Вместо того, чтобы просто передавать весь объект задачи из действия в список задач в вашей функции редуктора:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -27,7 +27,7 @@ function applyAddTodo(state, action) {
 }
 ~~~~~~~~
 
-You can add the `completed` property as hardcoded property to your reducer function:
+Вы можете добавить свойство `complete` как жестко закодированное свойство к вашей функции редуктора:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -37,7 +37,7 @@ function applyAddTodo(state, action) {
 }
 ~~~~~~~~
 
-Finally, you can omit it in the action's payload:
+Наконец, вы можете не включать его в полезной нагрузке действия:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -47,11 +47,11 @@ Finally, you can omit it in the action's payload:
 }
 ~~~~~~~~
 
-Now, you only defined the necessary payload in the action to add a todo item to the list in the store. Nevertheless, if at some point the Todo application decides to add uncompleted todos in the first place, you can add it in the action again and leave it out of the reducer. Ultimately, keeping the payload in the action to a minimum should be a best practice in Redux.
+Теперь вы определяете только необходимую полезную нагрузку в действии, чтобы добавить элемент todo в список в хранилище. Тем не менее, если в какой-то момент приложение Todo решит добавить незавершенные задачи в первую очередь, вы можете снова добавить его в действие и оставить его вне редуктора. В конечном счете, сведение полезной нагрузки в действии к минимуму должно быть лучшей практикой в Redux.
 
-### Action Type
+### Тип действия
 
-Actions get evaluated in reducers by action type. The action type is the glue between both parts even though actions and reducers can be defined independently. To make the application more robust, you should extract the action type as a variable. Otherwise, you can run into typos where an action never reaches a reducer because you misspelled it.
+Действия оцениваются в редукторах по типу. Тип действия является связующим звеном между обеими частями, хотя действия и редукторы могут быть определены независимо. Чтобы сделать приложение более устойчивым, вы должны извлечь тип действия как переменную. В противном случае вы можете столкнуться с опечатками, когда действие никогда не достигает редуктора, потому что вы ошиблись в нем.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -91,11 +91,11 @@ function reducer(state, action) {
 }
 ~~~~~~~~
 
-There is another benefit in extracting the action type as variable. Because action, reducer and action type are loosely coupled, you can define them in separate files. You would only need to import the action type to use them only in specific actions and reducers. After all, action types could be used in multiple reducers too. This use case will be covered in another chapter when it comes to the advanced reducers.
+Есть еще одно преимущество в извлечении типа действия как переменной. Поскольку действие, редуктор и тип действия слабо связаны, вы можете определить их в отдельных файлах. Вам нужно будет только импортировать тип действия, чтобы использовать их только в определенных действиях и редукторах. В конце концов, типы действий можно использовать и в нескольких редукторах. Этот вариант использования будет рассмотрен в другой главе, когда речь идет о продвинутых редукторах.
 
-### Action Creator
+### Создатели действий
 
-Action creators add another layer on top, which often leads to confusion when learning Redux. Action creators are not mandatory, but they are convenient to use. So far, you have dispatched an action as plain action object:
+Создатели действий добавляют еще один слой, что часто приводит к путанице при изучении Redux. Создатели действий не являются обязательными, но ими удобно пользоваться. Итак, вы отправили действие как простой объект действия:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -107,7 +107,7 @@ store.dispatch({
 });
 ~~~~~~~~
 
-Action creators encapsulate the action with its action type and optional payload in a reusable function. By having a function for your action, you gain the flexibility to pass any payload to the action as arguments. After all, they are only pure functions which return an object.
+Создатели действий инкапсулируют действие с его типом действия и необязательной полезной нагрузкой в многократно используемую функцию. Имея функцию для вашего действия, вы получаете гибкость для передачи любой полезной нагрузки в качестве аргументов. В конце концов, это только чистые функции, которые возвращают объект.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -119,18 +119,18 @@ function doAddTodo(id, name) {
 }
 ~~~~~~~~
 
-Now, you can use the action creator by invoking it as function in your dispatch method:
+Теперь вы можете использовать создатель действия, вызывая его как функцию в вашем методе отправки:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
 store.dispatch(doAddTodo('0', 'learn redux'));
 ~~~~~~~~
 
-Action creators return a plain action (object). Once again, it is not mandatory to use them, but it adds convenience and makes your code more readable in the long run. In addition, you can test action creators independently as functions. Last but not least, these action creators stay reusable because they are functions.
+Создатели действий возвращают простое действие (объект). Еще раз, это не обязательно использовать их, но это добавляет удобство и делает ваш код более читабельным в долгосрочной перспективе. Кроме того, вы можете самостоятельно тестировать создателей действий как функции. Наконец, что не менее важно, эти создатели действий остаются многоразовыми, потому что они являются функциями.
 
-### Optional Payload
+### Необязательная полезная нагрузка
 
-In the book, it was mentioned earlier that actions don't need to have a payload. Only the action type is required. For instance, imagine you want to login into your Todo application. Therefore, you need to open up a modal where you can enter your credentials: email and password. You wouldn't need a payload for your action in order to open a modal. You only need to signalize that the modal state should be stored as "open" by dispatching an action.
+В книге было упомянуто ранее, что действия не должны иметь полезную нагрузку. Требуется только тип действия. Например, представьте, что вы хотите залогиниться в свое приложение Todo. Вам нужно открыть модальное окно, где вы можете ввести свои учетные данные: адрес электронной почты и пароль. Вам не понадобится полезная нагрузка для вашего действия, чтобы открыть модальное окно. Вам нужно только сигнализировать, что состояние модального окна должно быть сохранено как «открытое», отправляя действие.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -139,7 +139,7 @@ In the book, it was mentioned earlier that actions don't need to have a payload.
 }
 ~~~~~~~~
 
-A reducer would take care of it and set the state of a `isLoginModalOpen` boolean to true. While it is good to know that the payload is not mandatory in actions, the last example can lead to a bad practice. It is because you may already know that you would need a second action to close the modal again:
+Редуктор позаботится об этом и установит для логического состояния `isLoginModalOpen` значение true. Хотя полезно знать, что полезная нагрузка не является обязательной в действиях, последний пример может привести к плохой практике. Потому, что вам понадобится второе действие, чтобы снова закрыть модальное окно:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -148,7 +148,7 @@ A reducer would take care of it and set the state of a `isLoginModalOpen` boolea
 }
 ~~~~~~~~
 
-Again a reducer would set the `isLoginModalOpen` boolean in the state to false. That's verbose, because you already need two actions to alter only one property in the state. By planning your actions thoughtfully, you avoid these bad practices and keep your actions on a higher level of abstraction. If you used the optional payload for the action, you could solve login scenario in only one action instead of two actions. The `isLoginModalOpen` property would be dynamically passed in the action rather than being hardcoded in a reducer.
+Снова редуктор установил бы логическое значение `isLoginModalOpen` в состоянии в false. Это многословно, потому что вам уже нужны два действия, чтобы изменить только одно свойство в состоянии. Продуманно планируя свои действия, вы избегаете этих плохих практик и держите свои действия на более высоком уровне абстракции. Если бы вы использовали дополнительную полезную нагрузку для действия, вы могли бы решить проблему входа в систему только в одном действии вместо двух. Свойство isLoginModalOpen будет динамически передаваться в действии, а не жестко кодироваться в редукторе.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -158,7 +158,7 @@ Again a reducer would set the `isLoginModalOpen` boolean in the state to false. 
 }
 ~~~~~~~~
 
-By using an action creator, the payload can be passed in as arguments and thus stays flexible. Afterward, only one action instead of two is needed.
+Используя создателя действий, полезная нагрузка может быть передана в качестве аргументов и, таким образом, остается гибкой. После этого требуется только одно действие вместо двух.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -170,11 +170,11 @@ function doToggleLoginModal(open) {
 }
 ~~~~~~~~
 
-In Redux, actions should always try to stay on an abstract level rather than on a concrete level. Otherwise, you will end up with duplications and verbose actions. However, don't worry too much about it for now. This will be explained in more detail in another chapter in this book that is about commands and events.
+В Redux действия всегда должны пытаться оставаться на абстрактном уровне. В противном случае вы получите дубликаты и избыточные действия. Тем не менее, пока не слишком переживайте по этому поводу. Это будет объяснено более подробно в другой главе этой книги, посвященной командам и событиям.
 
-### Payload Structure
+### Структура полезной нагрузки
 
-Again you will encounter a best practice that is not mandatory in Redux. So far, the payload was dumped without much thought in the actions. Now imagine an action that has a larger payload than a simple todo. For instance, the action payload should clarify to whom the todo is assigned.
+Снова вы столкнетесь с лучшей практикой, которая не обязательна в Redux. До сих пор полезная нагрузка в действиях была сброшена без особых раздумий. Теперь представьте действие, которое имеет большую полезную нагрузку, чем простое задание. Например, полезная нагрузка действия должна уточнить, кому назначена задача.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -185,7 +185,7 @@ Again you will encounter a best practice that is not mandatory in Redux. So far,
 }
 ~~~~~~~~
 
-The properties would add up horizontally in the object, but mask the one most important property, which is the action type, when they become too many. Therefore, you should treat action type and payload on the same level, but nest the payload itself one level deeper as the two abstract properties.
+Свойства будут складываться горизонтально в объекте, скрывая наиболее важное свойство - тип действия - когда их становится слишком много. Следовательно, вы должны рассматривать тип действия и полезную нагрузку на одном уровне, но вкладывать саму полезную нагрузку на один уровень глубже как два абстрактных свойства.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -198,13 +198,13 @@ The properties would add up horizontally in the object, but mask the one most im
 }
 ~~~~~~~~
 
-The refactoring ensures that type and payload are visible on first glance. As said, it is not mandatory to do so and often adds more complexity. But in larger applications it keeps your action creators more readable.
+Рефакторинг гарантирует, что тип и полезная нагрузка видны с первого взгляда. Как уже говорилось, это не обязательно, и часто добавляет больше сложности. Но в более крупных приложениях ваши создатели действий становятся более читабельными.
 
-### Hands On: Redux Standalone with advanced Actions
+### Практика: Redux с продвинутыми действиями
 
-Let's dip into the Redux Playground again with the acquired knowledge about actions. You can take the [JS Bin project that you have done in the last chapter](https://jsbin.com/kopohur/28/edit?html,js,console) again. The project will be used to show the advanced actions. You can try it on your own. Otherwise, the following part will guide you through the refactorings.
+Давайте снова окунемся в игровую площадку Redux с приобретенными знаниями о действиях. Вы можете снова взять [проект JS Bin, который вы делали в предыдущей главе](https://jsbin.com/kopohur/28/edit?html,js,console). Проект будет использоваться для демонстрации продвинутых действий. Вы можете попробовать это самостоятельно. В противном случае следующая часть проведет вас через рефакторинг.
 
-The minimum action payload is a quick refactoring. You can omit the `completed` property in the action and add it to the reducer functionality.
+Минимальная полезная нагрузка - быстрый рефакторинг. Вы можете опустить свойство `completed` в действии и добавить его в функциональность редуктора.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -232,7 +232,7 @@ store.dispatch({
 });
 ~~~~~~~~
 
-The next step is the extraction of the action types from the actions and reducer. They should be defined as variables and thus can be replaced in the reducer.
+Следующим шагом является извлечение типов действий из действий и редуктора. Они должны быть определены как переменные и, следовательно, могут быть заменены в редукторе.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -256,7 +256,7 @@ function reducer(state, action) {
 }
 ~~~~~~~~
 
-In addition, you can use the variables in the dispatched actions too.
+Кроме того, вы можете использовать переменные и в отправленных действиях.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -282,7 +282,7 @@ store.dispatch({
 });
 ~~~~~~~~
 
-In the next step, you can introduce action creators to your Todo application. First, define them as functions:
+На следующем шаге вы можете представить создателей действий своему приложению Todo. Сначала определите их как функции:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -301,7 +301,7 @@ function doToggleTodo(id) {
 }
 ~~~~~~~~
 
-And second, use them in your dispatch functions to return the action objects:
+Во-вторых, используйте их в своих функциях отправления для возврата объектов действия:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -310,6 +310,6 @@ store.dispatch(doAddTodo('1', 'learn mobx'));
 store.dispatch(doToggleTodo('0'));
 ~~~~~~~~
 
-There were two more advanced topics about actions in this chapter: optional payload and payload structure. The first topic wouldn't apply in the current application. Every action has to have a payload in this scenario. The second topic could be applied. However, the payload is too small at this point in time and thus doesn't need to be restructured with an intermediate payload property.
+В этой главе были еще две продвинутые темы о действиях: дополнительная полезная нагрузка и структура полезной нагрузки. Первая тема не будет применяться в текущем приложении. Каждое действие должно иметь полезную нагрузку в данном сценарии. Вторая тема может быть применена. Однако на данный момент полезная нагрузка слишком мала и, следовательно, не требует реструктуризации с использованием свойства промежуточной полезной нагрузки.
 
-The [final Todo application can be found in this JS Bin](https://jsbin.com/kopohur/29/edit?html,js,console). You can do further experiments with it before you continue with the next chapter.
+[Финальное приложение Todo можно найти в этом JS Bin](https://jsbin.com/kopohur/29/edit?html,js,console). Вы можете провести дальнейшие эксперименты с ним, прежде чем перейти к следующей главе.
