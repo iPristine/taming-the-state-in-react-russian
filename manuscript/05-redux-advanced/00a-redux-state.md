@@ -1,16 +1,16 @@
-# Redux State Structure and Retrieval
+# Извлечение и структура состояния Redux
 
-In the previous chapters, you have learned about Redux standalone and Redux in React. You would already be able to build smaller and medium sized applications with it. Before you dive deeper into Redux, I recommend you to experiment with your recent learnings and apply them in your applications. If you jump straight into the next chapters, you may get the feeling that Redux is overkill (which it is for most of the applications out there). However, the coming chapters should give you advanced guidance when scaling your state management with Redux in larger applications. There are a couple of techniques you can apply then.
+В предыдущих главах вы узнали о одиночном Redux и Redux в React. Вы уже можете создавать приложения малого и среднего размера. Прежде чем углубиться в Redux, я рекомендую вам поэкспериментировать со своими недавними знаниями и применить их в своих приложениях. Если вы перейдете прямо к следующим главам, у вас может сложиться впечатление, что Redux излишний (что и есть для большинства приложений). Однако в следующих главах вы получите подробные рекомендации по масштабированию управления состоянием с помощью Redux в более крупных приложениях. Есть несколько методов, которые вы сможете применить тогда.
 
-The following chapter guides you through more advanced topics in Redux to manage your state. You will get to know the middleware in Redux, you will learn more about a normalized and immutable state structure, and how to retrieve a substate in an improved way from the global state with selectors.
+Следующая глава проведет вас через более сложные темы в Redux для управления вашим состоянием. Вы познакомитесь с промежуточным программным обеспечением в Redux, узнаете больше о нормализованной и неизменной структуре состояний и о том, как улучшенным образом извлечь подсостояние из глобального состояния с помощью селекторов.
 
-## Middleware in Redux
+## Промежууточное программное обеспечение в Redux
 
-In Redux, you can use a middleware. Every dispatched action in Redux flows through this middleware. You can opt-in a specific feature in between of dispatching an action and the moment it reaches the reducer.
+В Redux вы можете использовать промежуточное ПО. Каждое отправленное действие в Redux пройдет через это промежуточное ПО. Вы можете включить определенную функцию между отправкой действия и моментом, когда оно достигает редуктора.
 
-There are useful libraries out there to opt-in features into your Redux middleware. In the following, you will get to know one of them: [redux-logger](https://github.com/evgenyrodionov/redux-logger). When you use it, it doesn't change anything in your application. But it will make your life easier as developer when dealing with Redux. What does it do? It simply logs the actions in your browser's developer console with `console.log()`. As a developer, it gives you clarity on which action is dispatched and how the previous and the new state are structured.
+Существуют полезные библиотеки для включения функций в ваше промежуточное ПО Redux. Далее вы познакомитесь с одним из них: [redux-logger](https://github.com/evgenyrodionov/redux-logger). Когда вы используете его, это ничего не меняет в вашем приложении. Но это облегчит вашу жизнь как разработчика при работе с Redux. Что оно делает? Он просто регистрирует действия в консоли разработчика вашего браузера с помощью `console.log()`. Как разработчику, он дает вам четкое представление о том, какое действие отправляется и как структурируется предыдущее и новое состояние.
 
-But where to apply this middleware in Redux? It is the Redux store which can be initialized with it. The `createStore()` functionality from Redux takes as third argument a so called enhancer. The redux library comes with one of these enhancers: `applyMiddleware()`.
+Но где применить это промежуточное ПО в Redux? Это магазин Redux, который можно инициализировать с ним. Функциональность `createStore()` из Redux принимает в качестве третьего аргумента так называемый улучшитель. Библиотека Redux поставляется с одним из следующих улучшителей: `applyMiddleware()`.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -23,7 +23,7 @@ const store = createStore(
 );
 ~~~~~~~~
 
-If you don't have an initial state for your Redux state, you can use `undefined` for it. Now, when using redux-logger, you can pass a `logger` instance to the `applyMiddleware()` function.
+Если у вас нет начального состояния для вашего состояния Redux, вы можете использовать для него `undefined`. Теперь при использовании redux-logger вы можете передать экземпляр `logger` в функцию `applyMiddleware()`.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -43,19 +43,19 @@ const store = createStore(
 );
 ~~~~~~~~
 
-That's it. Now every action should be visible in your browser's developer console when dispatching them. And thus your state changes become more predictable when developing without logging every action yourself.
+Вот и все. Теперь каждое действие должно отображаться в консоли разработчика вашего браузера при их отправке. И, таким образом, изменения вашего состояния становятся более предсказуемыми при разработке, не логгируя каждое действие самостоятельно.
 
-The `applyMiddleware()` functionality takes any number of middleware: `applyMiddleware(firstMiddleware, secondMiddleware, ...);`. The action will flow through all middleware before it reaches the reducers. Sometimes, you have to make sure to apply them in the correct order. For instance, the `redux-logger` middleware must be last in the middleware chain in order to output the correct actions and states.
+Функциональность `applyMiddleware()` принимает любое количество экземпляров промежуточного программного обеспечения: `applyMiddleware(firstMiddleware, secondMiddleware, ...);`. Действие будет проходить через все экземпляры промежуточного программного обеспечения, прежде чем оно достигнет редукторов. Иногда вы должны убедиться, что применяете их в правильном порядке. Например, промежуточное программное обеспечение `redux-logger` должно быть последним в цепочке для вывода правильных действий и состояний.
 
-Nevertheless, that's only the redux-logger middleware. On your way to implement Redux applications, you will surely find out more about useful features that can be applied with the Redux middleware. Most of these features are already taken care of in libraries that you will find published with npm. For instance, asynchronous actions in Redux are possible by using the Redux middleware. These asynchronous actions will be explained later in this book.
+Тем не менее, это только промежуточное программное обеспечение redux-logger. На пути к реализации приложений Redux вы наверняка узнаете больше о полезных функциях, которые можно применять с промежуточным ПО Redux. Большинство этих функций уже реализованы в библиотеках, которые вы найдете опубликованными с помощью npm. Например, асинхронные действия в Redux возможны при использовании промежуточного программного обеспечения Redux. Эти асинхронные действия будут объяснены позже в этой книге.
 
-## Immutable State
+## Неизменное состояние
 
-Redux embraces an immutable state. Your reducers will always return a new state object. You will never mutate the incoming state. Therefore, you might have to get used to different JavaScript functionalities and syntax to embrace immutable data structures.
+Redux охватывает неизменное состояние. Ваши редукторы всегда будут возвращать новый объект состояния. Вы никогда не будете мутировать входящее состояние. Поэтому вам, возможно, придется привыкнуть к различным функциям и синтаксису JavaScript, чтобы охватить неизменные структуры данных.
 
-So far, you have used built-in JavaScript functionalities to keep your data structures immutable. Such as `array.map()` and `array.concat(item)` for arrays or `Object.assign()` for objects. All of these functionalities return new instances of arrays or objects without altering the old arrays and objects. Often, you have to read the official JavaScript documentation to make sure that they return a new instance of the array or object. Otherwise, you would violate the constraints of Redux because you would mutate the previous instance which in this case is often the state or action.
+До сих пор вы использовали встроенные функции JavaScript для сохранения неизменности ваших структур данных. Например, `array.map()` и `array.concat(item)` для массивов или `Object.assign()` для объектов. Все эти функции возвращают новые экземпляры массивов или объектов без изменения старых массивов и объектов. Часто вам нужно прочитать официальную документацию JavaScript, чтобы убедиться, что они возвращают новый экземпляр массива или объекта. В противном случае вы нарушили бы ограничения Redux, потому что изменили бы предыдущий экземпляр, который в этом случае часто является состоянием или действием.
 
-But it doesn't end here. You should know about your tools to keep data structures immutable in JavaScript. There are a handful of third-party libraries that can support you in keeping them immutable.
+Но этим не заканчивается. Вы должны знать о своих инструментах, чтобы сохранить неизменность структур данных в JavaScript. Существует несколько сторонних библиотек, которые могут помочь вам сохранить их неизменяемыми.
 
 * [immutable.js](https://github.com/facebook/immutable-js)
 * [immer.js](https://github.com/mweststrate/immer)
@@ -63,14 +63,14 @@ But it doesn't end here. You should know about your tools to keep data structure
 * [seamless-immutable.js](https://github.com/rtfeldman/seamless-immutable)
 * [baobab.js](https://github.com/Yomguithereal/baobab)
 
-But all of them come with three drawbacks. First, they add another layer of complexity to your application. Second, you have to learn yet another library. And third, you have to dehydrate and rehydrate your data, because most of these libraries wrap your vanilla JavaScript objects and arrays into a library specific immutable data object and array. It is an immutable data object/array in your Redux store, but once you want to use it in React you have to transform it into a plain JavaScript object/array. Personally I would recommend to use such libraries only in two scenarios:
+Но все они имеют три недостатка. Во-первых, они добавляют еще один уровень сложности вашему приложению. Во-вторых, вы должны изучить еще одну библиотеку. И в-третьих, вы должны извлекать и повторно вносить ваши данные, потому что большинство этих библиотек обертывают ваши ванильные объекты JavaScript и массивы в неизменяемый объект данных и массив для конкретной библиотеки. Это неизменный объект/массив данных в вашем хранилище Redux, но как только вы захотите использовать его в React, вам придется преобразовать его в простой объект/массив JavaScript. Лично я бы рекомендовал использовать такие библиотеки только в двух сценариях:
 
-* You are not comfortable to keep your data structures immutable with JavaScript ES5, JavaScript ES6 and beyond.
-* You want to improve the performance of immutable data structures when using huge amounts of data.
+* Вам неудобно поддерживать неизменность своих структур данных с помощью JavaScript ES5, JavaScript ES6 и более поздних версий.
+* Вы хотите повысить производительность неизменяемых структур данных при использовании огромных объемов данных.
 
-If both statements are false, I would highly recommend you to stick to plain JavaScript. As you have seen, the built-in JavaScript functionalities already help a lot for keeping data structures immutable. In JavaScript ES6 and beyond you get one more functionality to keep your data structures immutable: [spread operators](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Spread_operator). Spreading an object or array into a new object or new array always gives you a new object or new array.
+Если оба утверждения ложны, я настоятельно рекомендую вам придерживаться простого JavaScript. Как вы уже видели, встроенные функции JavaScript уже очень помогают поддерживать неизменность структур данных. В JavaScript ES6 и более поздних версиях вы получаете еще одну функциональность для сохранения неизменности ваших структур данных: [spread операторы](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Spread_operator). Распространение объекта или массива в новый объект или новый массив всегда дает вам новый объект или новый массив.
 
-Do you recall how you added a new todo item or how you completed a todo item in your reducers?
+Помните ли вы, как вы добавили новый элемент todo или как вы выполнили элемент todo в ваших редукторах?
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -86,7 +86,7 @@ const newTodos = todos.map(todo =>
   );
 ~~~~~~~~
 
-If you added more JavaScript ES6 by using the spread operator, you can keep these even more concise.
+Если вы добавили больше JavaScript ES6 с помощью spread оператора, вы можете сделать их еще более краткими.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -102,16 +102,16 @@ const newTodos = todos.map(todo =>
   );
 ~~~~~~~~
 
-JavaScript gives you enough tools to keep your data structures immutable. There is no need to use a third-party library except for the two mentioned use cases. However, there might be a third use case where such library would help: deeply nested data structures in Redux that need to be kept immutable. It is true that it becomes more difficult to keep data structures immutable when they are nested. But, as mentioned earlier in the book, it is bad practice to have deeply nested data structures in Redux in the first place. That's where the next chapter of the book comes into play that can be used to keep your data structures flat in the Redux store.
+JavaScript дает вам достаточно инструментов, чтобы ваши структуры данных оставались неизменными. Нет необходимости использовать стороннюю библиотеку, за исключением двух упомянутых вариантов использования. Тем не менее, может быть третий вариант использования, где такая библиотека может помочь: глубоко вложенные структуры данных в Redux, которые необходимо сохранять неизменяемыми. Это правда, что становится сложнее поддерживать неизменность структур данных, когда они вложены. Но, как упоминалось ранее в этой книге, плохая практика - иметь глубоко вложенные структуры данных в Redux. Вот тут-то и вступает в игру следующая глава книги, которую можно использовать, чтобы сохранить структуру данных в хранилище Redux.
 
-## Normalized State
+## Нормализованное состояние
 
-A best practice in Redux is a flat state structure. You don't want to maintain an immutable structure for your state when it is deeply nested. It becomes tedious and unreadable even with spread operators. But often you don't have control over your data structure, because it comes from a backend application by using its API. When having a deeply nested data structure, you have two options:
+Лучшая практика в Redux - это плоская структура состояния. Вы не захотите поддерживать неизменную структуру для своего состояния, когда оно глубоко вложено. Это становится утомительным и нечитаемым даже со spread операторами. Но часто вы не можете контролировать свою структуру данных, потому что она поступает из внутреннего приложения с помощью его API. При наличии глубоко вложенной структуры данных у вас есть два варианта:
 
-* saving it in the store as it is and postpone the problem (not good)
-* saving it as normalized data structure in the store (good)
+* сохранить его в хранилище как есть и отложить проблему (не хорошо)
+* сохранение в виде нормализованной структуры данных в магазине (хорошо)
 
-You should try to default to the second option. You only deal with the problem once and all subsequent parts in your application will be grateful for it. Let's run through one scenario to illustrate the normalization of data. Imagine you have the following nested data structure:
+Вы должны пытаться выполнить второй вариант по умолчанию. Вы решаете проблему только один раз, и все последующие части вашего приложения будут вам благодарны. Давайте рассмотрим один сценарий, чтобы проиллюстрировать нормализацию данных. Представьте, что у вас есть следующая вложенная структура данных:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -137,7 +137,7 @@ const todos = [
 ];
 ~~~~~~~~
 
-Both library creators, Dan Abramov and Michel Weststrate, did a great job: they created popular libraries for state management. The first option, as mentioned, would be to save the todos as they are in the store. The todos themselves would have the deeply nested information of the `assignedTo` object within the `todo` object. Now, if an action wanted to correct an assigned user, the reducer would have to deal with the deeply nested data structure. Let's add Andrew Clark as creator of Redux.
+Оба создателя библиотеки, Дан Абрамов и Мишель Вестстрайт, проделали большую работу: они создали популярные библиотеки для управления состоянием. Первым вариантом, как уже упоминалось, будет сохранение задач в том виде, в каком они находятся в магазине. Сами задачи могут иметь глубоко вложенную информацию об объекте `assignTo` в объекте `todo`. Теперь, если действие хотело бы исправить назначенного пользователя, редуктор должен был бы иметь дело с глубоко вложенной структурой данных. Давайте добавим Эндрю Кларка как создателя Redux.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -175,7 +175,7 @@ function applyChangeAssignedTo(state, action) {
 }
 ~~~~~~~~
 
-This would lead to the following list of todos in your Redux store after the action has been dispatched:
+Это приведет к следующему списку задач в вашем хранилище Redux после отправки действия:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -201,9 +201,9 @@ const todos = [
 ];
 ~~~~~~~~
 
-As you can see from the reducer, the further you have to reach into a deeply nested data structure, the more you have to be careful to keep your data structure immutable. Each level of nested data adds more tedious work of maintaining it. Therefore, you could use a library called [normalizr](https://github.com/paularmstrong/normalizr) to flatten (normalize) your state. The library uses schema definitions to transform deeply nested data structures into dictionaries that have entities and a corresponding list of ids.
+Как вы можете видеть из редуктора, чем дальше вы должны проникнуть в глубоко вложенную структуру данных, тем больше вы должны быть осторожны, чтобы сохранить вашу структуру данных неизменной. Каждый уровень вложенных данных добавляет более утомительную работу по его обслуживанию. Следовательно, вы можете использовать библиотеку [normalizr](https://github.com/paularmstrong/normalizr), чтобы сгладить (нормализовать) ваше состояние. Библиотека использует определения схемы для преобразования глубоко вложенных структур данных в словари, которые имеют сущности и соответствующий список идентификаторов.
 
-What would that look like? Let's take the previous list of todo items as example. First, you would have to define schemas for your entities only once:
+Как это будет выглядеть? Давайте возьмем предыдущий список элементов todo в качестве примера. Во-первых, вам нужно будет определить схемы для ваших объектов только один раз:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -216,7 +216,7 @@ const todoSchema = new schema.Entity('todo', {
 });
 ~~~~~~~~
 
-Second, you can normalize your data whenever you want:
+Во-вторых, вы можете нормализовать ваши данные, когда захотите:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -235,7 +235,7 @@ const normalizedData = normalize(todos, [ todoSchema ]);
 # leanpub-end-insert
 ~~~~~~~~
 
-The output would be the following:
+Вывод будет следующим:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -270,9 +270,9 @@ The output would be the following:
 }
 ~~~~~~~~
 
-The deeply nested data became a flat data structure grouped by entities. Each entity can reference another entity by its id. It is like you would keep these entities in a database. They are decoupled now. Afterward, in your Redux application, you could have one reducer that stores and deals with the `assignedTo` entities and one reducer that deals with the `todo` entities. The data structure is flat and grouped by entities and thus easier to access and to manipulate.
+Глубоко вложенные данные стали плоской структурой данных, сгруппированных по сущностям. Каждый объект может ссылаться на другой объект по его идентификатору. Это как если бы вы хранили эти объекты в базе данных. Они отделены сейчас. После этого в вашем приложении Redux у вас может быть один редуктор, который хранит и имеет дело с сущностями `assignTo`, и один редуктор, который имеет дело с сущностями `todo`. Структура данных является плоской и сгруппированной по сущностям, что облегчает доступ и манипулирование ею.
 
-There is another benefit in normalizing your data. When your data is not normalized, entities are often duplicated in your nested data structure. Imagine the following object with todos.
+Есть еще одно преимущество в нормализации ваших данных. Когда ваши данные не нормализованы, сущности часто дублируются в вашей вложенной структуре данных. Представьте себе следующий объект с задачами.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -298,7 +298,7 @@ const todos = [
 ];
 ~~~~~~~~
 
-If you store such denormalized data in your Redux store, you will likely run into an major issue: Imagine you want to update the name property `Robin Wieruch` of all `assignedTo` properties. You would have to run through all todos in order to update all `assignedTo` properties with the id `55`. The problem: There is no single source of truth. You will likely forget to update an entity and run into a stale state eventually. Therefore, the best practice is to store your state normalized so that each entity is a single source of truth. There will be no duplication of entities and thus no stale state when updating the one single source of truth, because each todo will reference to the updated `assignedTo` entity:
+Если вы сохраняете такие денормализованные данные в своем хранилище Redux, вы, скорее всего, столкнетесь с серьезной проблемой: представьте, что вы хотите обновить свойство name `Robin Wieruch` для всех свойств `assignTo`. Вам нужно будет пройти через все задачи, чтобы обновить все свойства `assignedTo` с идентификатором `55`. Проблема: единого источника правды не существует. Скорее всего, вы забудете обновить сущность и в конечном итоге перейдете в устаревшее состояние. Следовательно, наилучшей практикой является сохранение вашего состояния нормализованным, чтобы каждая сущность была единственным источником правды. При обновлении одного единственного источника истины не будет дублирования сущностей и, следовательно, нет устаревшего состояния, потому что каждая задача будет ссылаться на обновленную сущность `assignTo`:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -329,17 +329,17 @@ If you store such denormalized data in your Redux store, you will likely run int
 }
 ~~~~~~~~
 
-In conclusion, normalizing your state has two benefits. It keeps your state flat and thus easier manageable with immutable data structures. In addition, it groups entities to single sources of truth without any duplications. When you normalize your state, you will automatically get groupings of entities that could lead to their own reducers managing them. However, you don't want to start out with normalizing your state from the beginning. First you should try to introduce Redux itself to your application. Once you experience difficulities when altering your state, because it is deeply nested, or you experience issues updating single entities, because there is no single source of truth, you would want to introduce state normalization in your Redux application.
+В заключение, нормализация вашего состояния имеет два преимущества. Он сохраняет состояние вашего состояния и, таким образом, легче управляется с помощью неизменяемых структур данных. Кроме того, он группирует сущности в единые источники правды без каких-либо дубликатов. Когда вы нормализуете свое состояние, вы автоматически получите группы объектов, которые могут привести к тому, что их собственные редукторы будут управлять ими. Однако вы не хотите начинать с нормализации своего состояния с самого начала. Сначала вы должны попытаться внедрить сам Redux в ваше приложение. Если вы испытываете трудности при изменении состояния, потому что оно глубоко вложено, или у вас возникают проблемы с обновлением отдельных сущностей, потому что нет единого источника правды, вы можете захотеть ввести нормализацию состояния в вашем приложении Redux.
 
-Before you will apply the normalization in your own Todo application as exercise, there exists yet another benefit when normalizing your state with a library such as normalizr. It is about denormalization: how do components retrieve the normalized state? You will learn it in the next chapter.
+Прежде чем вы примените нормализацию в своем собственном приложении Todo в качестве упражнения, существует еще одно преимущество при нормализации вашего состояния с помощью такой библиотеки, как normalizr. Речь идет о денормализации: как компоненты получают нормализованное состояние? Вы узнаете это в следующей главе.
 
-## Selectors
+## Селекторы
 
-In Redux, there is the concept of selectors to retrieve derived properties from your state. A selector is a function that takes the state as argument and returns a substate or derived properties of it. It can be that they only return a substate of your global state or that they already preprocess your state to return derived properties. The function can take optional arguments to support the selection process.
+В Redux существует концепция селекторов для извлечения производных свойств из вашего состояния. Селектор - это функция, которая принимает состояние в качестве аргумента и возвращает его подсостояние или производные свойства. Может случиться так, что они возвращают только подсостояние вашего глобального состояния или что они уже предварительно обрабатывают ваше состояние для возврата производных свойств. Функция может принимать необязательные аргументы для поддержки процесса выбора.
 
-### Plain Selectors
+### Чистые селекторы
 
-Selectors usually follow one syntax. The mandatory argument of a selector is the state from where it has to select from. There can be optional arguments that are in a supportive role to select the substate or the derived properties.
+Селекторы обычно следуют одному синтаксису. Обязательным аргументом селектора является состояние, из которого он должен выбирать. Могут быть необязательные аргументы, которые играют вспомогательную роль для выбора подсостояния или производных свойств.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -349,7 +349,7 @@ Selectors usually follow one syntax. The mandatory argument of a selector is the
 (state, args) => derived properties
 ~~~~~~~~
 
-Selectors are not mandatory. When thinking about all the parts in Redux, only the action(s), the reducer(s) and the Redux store are a binding requirement. Similar to action creators, selectors can be used to achieve an improved developer experience in a Redux architecture, but you don't need to use them. What does a selector look like? It is a plain function, as mentioned, that could live anywhere in your application. However, you would use it, maybe import it, when using Redux in React, in your `mapStateToProps()` function. So instead of retrieving the state explicitly:
+Селекторы не обязательны. При рассмотрении всех частей Redux обязательными являются только действие(я), редуктор(ы) и хранилище Redux. Подобно создателям действий, селекторы могут быть использованы для достижения улучшенного опыта разработчика в архитектуре Redux, но вам не обязательно их использовать. Как выглядит селектор? Как уже упоминалось, это простая функция, которая может жить где угодно в вашем приложении. Тем не менее, вы могли бы использовать его, возможно импортировать его при использовании Redux в React, в вашей функции `mapStateToProps()`. Так что вместо получения состояния явно:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -360,7 +360,7 @@ function mapStateToProps(state) {
 }
 ~~~~~~~~
 
-You would retrieve it implicitly via a selector:
+Вы бы извлекли его неявно через селектор:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -379,13 +379,13 @@ function mapStateToProps(state) {
 }
 ~~~~~~~~
 
-It is similar to the action and reducer concept. Instead of manipulating the state directly in the Redux store, you will use action(s) and reducer(s) to alter it indirectly. The same applies for selectors that don't retrieve the derived properties directly but indirectly from the global state.
+Это похоже на концепцию действия и редуктора. Вместо того, чтобы манипулировать состоянием непосредственно в хранилище Redux, вы будете использовать действие(я) и редуктор(ы) для его косвенного изменения. То же самое относится к селекторам, которые не извлекают производные свойства прямо, но косвенно из глобального состояния.
 
-You may wonder: Why are selectors an advantage? There are several benefits. A selector can be reused. You will run into cases where you select the derived properties or substate more often from the global state. For instance, you may have multiple places in your application where you want to show only completed todo items. And that's always a good sign to use a function in the first place. In addition, selectors can be tested separately. They are pure functions and thus an easily testable part in your application and the overall Redux architecture. Last but not least, deriving properties from state can become a complex undertaking in a scaling application. As mentioned, a selector could get optional arguments to derive more sophisticated properties from the state. The selector function itself would become more complex, but it would be encapsulated in one function rather than, for instance in React and Redux, in multiple `mapStateToProps()` functions.
+Вы можете спросить: почему селекторы являются преимуществом? Есть несколько плюсов. Селектор можно использовать повторно. Вы столкнетесь со случаями, когда выбираете производные свойства или чаще выполняете подстановку из глобального состояния. Например, у вас может быть несколько мест в приложении, где вы хотите показывать только завершенные элементы задач. И это всегда хороший знак, чтобы использовать функцию в первую очередь. Кроме того, селекторы могут тестироваться отдельно. Они являются чистыми функциями и, следовательно, легко тестируемой частью вашего приложения и общей архитектуры Redux. Наконец, что не менее важно, получение свойств из состояния может стать сложной задачей в масштабирующем приложении. Как уже упоминалось, селектор может получить необязательные аргументы для получения более сложных свойств из состояния. Селекторная функция сама по себе станет более сложной, но она будет заключена в одну функцию, а не, например, в React и Redux, в несколько функций `mapStateToProps()`.
 
-### Denormalize State in Selectors
+### Денормализация состояния в селекторах
 
-In the previous chapter about normalization, there was one benefit left unexplained. It is about selecting normalized state from your state layer to pass it to your view layer. Personally, I would argue a normalized state structure makes it much more convenient to select a substate from it. When you recall the normalized state structure, it looked something like the following:
+В предыдущей главе о нормализации было одно преимущество, которое осталось необъяснимым. Речь идет о выборе нормализованного состояния из вашего слоя состояний, чтобы передать его слою представления. Лично я бы сказал, что нормализованная структура состояний делает гораздо более удобным выбор из нее подсостояния. Когда вы вспоминаете структуру нормализованного состояния, это выглядело примерно так:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -395,17 +395,17 @@ In the previous chapter about normalization, there was one benefit left unexplai
 }
 ~~~~~~~~
 
-For instance, in a real work application it would look like the following:
+Например, в реальном рабочем приложении это будет выглядеть следующим образом:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
-// state
+// состояние
 [
   { id: '0', name: 'learn redux' },
   { id: '1', name: 'learn mobx' },
 ]
 
-// normalized state
+// нормализванное состояние
 {
   entities: {
     0: {
@@ -421,9 +421,9 @@ For instance, in a real work application it would look like the following:
 }
 ~~~~~~~~
 
-If you recall the Redux in React chapter, there you passed the list of todos from the `TodoList` component, because it is a connected component, down to the whole component tree. How would you solve this with the normalized state from above?
+Если вы вспомните главу Redux in React, вы передали список задач из компонента `TodoList`, поскольку он является связанным компонентом, вплоть до всего дерева компонентов. Как бы вы решили это с нормализованным состоянием?
 
-Assuming that the reducer stored the state in a normalized immutable data structure, you would only pass the list of todo `ids` to your `TodoList` component. Because this component manages the list and not the entities themselves, it makes perfect sense that it only gets the list with references to the entities.
+Предполагая, что редуктор хранит состояние в нормализованной неизменной структуре данных, вы бы только передали список идентификаторов todo `ids` вашему компоненту `TodoList`. Поскольку этот компонент управляет списком, а не самими сущностями, имеет смысл, что он получает список только со ссылками на сущности.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -451,7 +451,7 @@ function mapStateToProps(state) {
 const ConnectedTodoList = connect(mapStateToProps)(TodoList);
 ~~~~~~~~
 
-Now the `ConnectedTodoItem` component, that already passes the `onToggleTodo()` handler via the `mapDispatchToProps()` function to its plain `TodoItem` component, would select the todo entity matching to the incoming `todoId` property.
+Теперь компонент `ConnectedTodoItem`, который уже передает обработчик `onToggleTodo()` через функцию `mapDispatchToProps()` в свой простой компонент `TodoItem`, выбирает сущность todo, соответствующий входящему свойству `todoId`.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -477,11 +477,11 @@ const ConnectedTodoItem = connect(
 )(TodoItem);
 ~~~~~~~~
 
-The `TodoItem` component itself would stay the same. It still gets the `todo` item and the `onToggleTodo()` handler as arguments. In addition, you can see two more concepts that were explained earlier. First, the selector grows in complexity because it gets optional arguments to select derived properties from the state. Second, the `mapStateToProps()` function makes use of the incoming props from the `TodoList` component that uses the `ConnectedTodoItem` component.
+Сам компонент `TodoItem` остался бы прежним. Он по-прежнему получает элемент `todo` и обработчик `onToggleTodo()` в качестве аргументов. Кроме того, вы можете увидеть еще две концепции, которые были объяснены ранее. Во-первых, селектор становится все сложнее, поскольку получает необязательные аргументы для выбора производных свойств из состояния. Во-вторых, функция `mapStateToProps()` использует входящие пропсы из компонента `TodoList`, который использует компонент `ConnectedTodoItem`.
 
-As you can see, the normalized state requires to use more connected components. More components are responsible to select their needed derived properties. But in a growing application, following this pattern can make it easier to reason about it. You only pass properties that are really necessary to the component. In the last case, the `TodoList` component only cares about a list of references yet the `TodoItem` component itself cares about the entity that is selected by using the reference passed down by the `TodoList` component.
+Как видите, нормализованное состояние требует использования большего количества подключенных компонентов. Больше компонентов отвечают за выбор необходимых им производных свойств. Но в растущем приложении, следуя этому шаблону, можно легче рассуждать об этом. Вы передаете только те свойства, которые действительно необходимы компоненту. В последнем случае компонент `TodoList` заботится только о списке ссылок, а сам компонент `TodoItem` заботится о сущности, которая выбрана с использованием ссылки, передаваемой компонентом `TodoList`.
 
-There exists another way to denormalize your normalized state when using a library such as normalizr. The previous scenario allowed you to only pass the minimum of properties to the components. Each component was responsible to select its state. In the nexy scenario, you will denormalize your state in one component while the other components don't need to care about it. You will use the defined schema, which you have used for the initial normalization, to reverse the normalization.
+Существует другой способ денормализовать ваше нормализованное состояние при использовании библиотеки, такой как normalizr. Предыдущий сценарий позволял передавать только минимальные свойства компонентам. Каждый компонент отвечал за выбор своего состояния. В следующем сценарии вы денормализуете свое состояние в одном компоненте, в то время как другие компоненты не должны заботиться об этом. Вы будете использовать определенную схему, которую вы использовали для начальной нормализации, чтобы отменить нормализацию.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -516,41 +516,41 @@ function mapStateToProps(state) {
 const ConnectedTodoList = connect(mapStateToProps)(TodoList);
 ~~~~~~~~
 
-In this scenario, the whole normalized data structure gets denormalized in the selector. You will have the whole list of todos in your `TodoList` component. The `TodoItem` component wouldn't need to take care about the denormalization.
+В этом случае вся нормализованная структура данных денормализуется в селекторе. У вас будет полный список задач в вашем компоненте `TodoList`. Компоненту `TodoItem` не нужно заботиться о денормализации.
 
-As you can see, there are two essential ways on how to deal with normalized state in your selectors or in general in the `mapStateToProps()` functions. It is up to you to find about the best suited implementation for your own use case. Perhaps you don't even need to normalize your state in the first place, because it is already flat or not very deeply nested.
+Как вы можете видеть, есть два основных способа работы с нормализованным состоянием: в ваших селекторах или вообще в функциях `mapStateToProps()`. Это зависит от вас, чтобы найти наиболее подходящую реализацию для вашего собственного варианта использования. Возможно, вам даже не нужно сначала нормализовать свое состояние, потому что оно уже плоское или не очень глубоко вложенное.
 
 ### Reselect
 
-When using selectors in a scaling application, you should consider a library called [reselect](https://github.com/reactjs/reselect) that provides you with advanced selectors. Basically, it uses the same concept of plain selectors as you have learned before, but comes with two improvements.
+При использовании селекторов в масштабирующем приложении вам следует рассмотреть библиотеку под названием [reselect](https://github.com/reactjs/reselect), которая предоставляет вам расширенные селекторы. По сути, она использует ту же концепцию простых селекторов, как вы узнали ранее, но имеет два улучшения.
 
-A plain selector has one constraint:
+Простой селектор имеет одно ограничение:
 
-* *"Selectors can compute derived data, allowing Redux to store the minimal possible state."*
+* *"Селекторы могут вычислять производные данные, позволяя Redux сохранять минимально возможное состояние."*
 
-There are two more constraints when using selectors from the reselect library:
+Есть еще два ограничения при использовании селекторов из библиотеки reselect:
 
-* *"Selectors are efficient. A selector is not recomputed unless one of its arguments change."*
-* *"Selectors are composable. They can be used as input to other selectors."*
+* *"Селекторы эффективны. Селектор не пересчитывается, пока не изменится один из его аргументов."*
+* *«Селекторы являются составными. Их можно использовать в качестве входных данных для других селекторов.»*
 
-Selectors are pure functions without any side-effects. The output doesn't change when the input stays the same. Therefore, when a function is called twice and its arguments didn't change, it returns the same output. This proposition is used in reselect's selectors. It is called memoization in programming. A selector doesn't need to compute everything again when its input didn't change. It will simply return the same output, because it is a pure function. With memoization it remembers the previous input and if the input didn't change it returns the previous output. In a scaling application this can have a performance impacts.
+Селекторы - это чистые функции без каких-либо побочных эффектов. Результат не меняется, если входные данные остаются неизменными. Следовательно, когда функция вызывается дважды и ее аргументы не меняются, она возвращает один и тот же результат. Это утверждение используется в селекторах reselect. Это называется мемоизация в программировании. Селектору не нужно вычислять все заново, когда его входные данные не изменились. Он просто вернет тот же результат, потому что это чистая функция. При мемоизации он запоминает предыдущий входные данные и, если они не изменились, возвращает предыдущий результат. В масштабирующем приложении это может повлиять на производительность.
 
-Another benefit, when using reselect, is the ability to compose selectors. It supports the case of implementing reusable selectors that only solve one problem. Afterward they can be composed in a functional programming style.
+Другое преимущество при использовании reselect - возможность состовлять селекторы. Это поддерживает случай реализации многоразовых селекторов, которые решают только одну проблему. После этого они могут быть составлены в стиле функционального программирования.
 
-The book will not dive deeper into the reselect library. When learning Redux it is good to know about these advanced selectors, but you are fine by using plain selectors in the beginning. If you cannot stay put, you can read up the example usages in the [official GitHub repository](https://github.com/reactjs/reselect) and apply in your projects while reading the book.
+Книга не будет погружаться глубже в библиотеку reselect. При изучении Redux полезно знать об этих расширенных селекторах, но в начале вы можете использовать простые селекторы. Если вы не хотите оставаться на месте, вы можете прочитать примеры использования в [официальном репозитории GitHub](https://github.com/reactjs/reselect) и применять в своих проектах, читая книгу.
 
-## Hands On: Todo with Advanced Redux
+## Практика: Todo с продвинутым Redux
 
-Now in the Todo application, you can refactor everything to use the advanced techniques you have learned in the previous chapters: a middleware, an immutable data structure using JavaScript spread operators, a normalized data structure and selectors. Let's continue with the Todo application that you have build when you connected React and Redux. The last version can be found in this [GitHub repository](https://github.com/rwieruch/taming-the-state-todo-app/tree/3.0.0).
+Теперь в приложении Todo вы можете реорганизовать все, чтобы использовать продвинутые методы, которые вы изучили в предыдущих главах: промежуточное программное обеспечение, неизменную структуру данных с использованием spread операторов JavaScript, нормализованную структуру данных и селекторы. Давайте продолжим с приложением Todo, которое вы создали при подключении React и Redux. Последняя версия может быть найдена в этом [GitHub-репозитории](https://github.com/rwieruch/taming-the-state-todo-app/tree/3.0.0).
 
-In the first part, let's use the [redux-logger](https://github.com/evgenyrodionov/redux-logger) middleware. Therefore, you have to install it on the command line:
+В первой части давайте используем промежуточное программное обеспечение [redux-logger] (https://github.com/evgenyrodionov/redux-logger). Вы можете установить его в командной строке:
 
 {title="Command Line: /",lang="text"}
 ~~~~~~~~
 npm install --save redux-logger
 ~~~~~~~~
 
-Next you can use it when you create your store:
+Теперь вы можете использовать его при создании хранилища
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -585,9 +585,9 @@ const store = createStore(
 # leanpub-end-insert
 ~~~~~~~~
 
-When you start your Todo application now, you should see the output of the `logger` in the developer console of your browser when dispatching actions. The Todo application with the middleware using redux-logger can be found in this [GitHub repository](https://github.com/rwieruch/taming-the-state-todo-app/tree/4.0.0).
+Когда вы сейчас запускаете приложение Todo, вы должны увидеть вывод `logger` в консоли разработчика вашего браузера при отправке действий. Приложение Todo с промежуточным программным обеспечением, использующим redux-logger, можно найти в этом [GitHub-репозитарии](https://github.com/rwieruch/taming-the-state-todo-app/tree/4.0.0).
 
-The second part of this chapter is using the JavaScript spread operators instead of the `Object.assign()` function to keep an immutable data structure. You can apply it in your reducer functions:
+Вторая часть этой главы использует spread операторы JavaScript вместо функции `Object.assign()` для сохранения неизменной структуры данных. Вы можете применять его в своих функциях редуктора:
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -609,16 +609,16 @@ function applyToggleTodo(state, action) {
 }
 ~~~~~~~~
 
-The application should work the same as before, but this time with the spread operator for keeping an immutable data structure and thus an immutable state object. The source code can be found again in this [GitHub repository](https://github.com/rwieruch/taming-the-state-todo-app/tree/5.0.0).
+Приложение должно работать так же, как и раньше, но на этот раз со spread оператором для сохранения неизменяемой структуры данных и, следовательно, неизменяемого объекта состояния. Исходный код снова можно найти в этом [GitHub-репозитории](https://github.com/rwieruch/taming-the-state-todo-app/tree/5.0.0).
 
-In the third part of applying the advanced techniques from the previous chapters, you will use a normalized state structure. Therefore, you can install the neat library [normalizr](https://github.com/paularmstrong/normalizr) on the command line:
+В третьей части применения передовых методов из предыдущих глав вы будете использовать нормализованного структуру состояния. Поэтому вы можете установить аккуратную библиотеку [normalizr](https://github.com/paularmstrong/normalizr) в командной строке:
 
 {title="Command Line: /",lang="text"}
 ~~~~~~~~
 npm install --save normalizr
 ~~~~~~~~
 
-Let's have a look at the initial state for the `todoReducer`. You can make up an initial state for them. For instance, what about completing all coding examples in this book by having todo items for them?
+Давайте посмотрим на начальное состояние `todoReducer`. Вы можете сделать начальное состояние для него. Например, как насчет того, чтобы завершить все примеры кодая в этой книге, имея для каждого элемент todo?
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -640,7 +640,7 @@ function todoReducer(state = todos, action) {
 }
 ~~~~~~~~
 
-You can use normalizr to normalize this data structure. First, you have to define a schema:
+Вы можете использовать normalizr для нормализации этой структуры данных. Сначала вы должны определить схему:
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -661,7 +661,7 @@ const todoSchema = new schema.Entity('todo');
 # leanpub-end-insert
 ~~~~~~~~
 
-Second, you can use the schema to normalize your initial todos and use them as default parameter in your `todoReducer`.
+Во-вторых, вы можете использовать схему для нормализации ваших начальных задач и использовать их в качестве параметра по умолчанию в вашем `todoReducer`.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -684,7 +684,7 @@ function todoReducer(state = initialTodoState, action) {
 }
 ~~~~~~~~
 
-Third, your `todoReducer` needs to handle the normalized state structure. It has to deal with entities and a result (list of ids). You can output the normalized todos even though the Todo application crashes when you attempt to start it.
+В-третьих, ваш `todoReducer` должен обрабатывать структуру нормализованного состояния. Он должен иметь дело с сущностями и результатом (список идентификаторов). Вы можете вывести нормализованные задачи, даже если приложение Todo падает при попытке его запуска.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -692,7 +692,7 @@ const normalizedTodos = normalize(todos, [todoSchema]);
 console.log(normalizedTodos);
 ~~~~~~~~
 
-The adjusted reducer would have the following internal functions:
+Настроенный редуктор будет иметь следующие внутренние функции:
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -712,7 +712,7 @@ function applyToggleTodo(state, action) {
 }
 ~~~~~~~~
 
-It operates on `entities` and `ids`, because these are the output from the normalization. Last but not least, when connecting Redux with React, the components need to be aware of the normalized data structure. First, the connection between store and components:
+Он работает с `entities` и `ids`, потому что это выходные данные нормализации. И последнее, но не менее важное: при подключении Redux к React компоненты должны знать о нормализованной структуре данных. Во-первых, связь между магазином и компонентами:
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -749,7 +749,7 @@ const ConnectedTodoItem = connect(
 # leanpub-end-insert
 ~~~~~~~~
 
-Second, the `TodoList` component receives only the `todosAsIds` and the `TodoItem` receives the `todo` entity.
+Во-вторых, компонент `TodoList` получает только `todosAsIds`, а `TodoItem` получает сущность `todo`.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -777,9 +777,9 @@ function TodoItem({ todo, onToggleTodo }) {
 }
 ~~~~~~~~
 
-The application should work again. Start it and play around with it. You can find the source code in the [GitHub repository](https://github.com/rwieruch/taming-the-state-todo-app/tree/6.0.0). You have normalized your initial state structure and adjusted your reducer to deal with the new data structure.
+Приложение должно снова работать. Запустите его и поиграйте с ним. Вы можете найти исходный код в [GitHub-репозитарии](https://github.com/rwieruch/taming-the-state-todo-app/tree/6.0.0). Вы нормализовали структуру исходного состояния и настроили редуктор для работы с новой структурой данных.
 
-In the fourth and last part, you are going to use selectors for your Redux architecture. This refactoring is fairly straight forward. You have to extract the parts that operate on the state in your `mapStateToProps()` functions to selector functions. First, define the selector functions:
+В четвертой и последней части вы используете селекторы для вашей архитектуры Redux. Этот рефакторинг довольно прост. Вы должны извлечь части, которые воздействуют на состояние в ваших функциях `mapStateToProps()`, в функции селекторов. Сначала определим функции селектора:
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -794,7 +794,7 @@ function getTodo(state, todoId) {
 }
 ~~~~~~~~
 
-Second, you can use these functions instead of operating on the state directly in your `mapStateToProps()` functions:
+Во-вторых, вы можете использовать эти функции вместо того, чтобы работать с состоянием непосредственно в ваших функциях `mapStateToProps()`:
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -817,11 +817,11 @@ function mapStateToPropsItem(state, props) {
 }
 ~~~~~~~~
 
-The Todo application should work with selectors now. You can find it in the [GitHub repository](https://github.com/rwieruch/taming-the-state-todo-app/tree/7.0.0) again.
+Приложение Todo теперь должно работать с селекторами. Вы можете снова найти его в [GitHub-репозиторий](https://github.com/rwieruch/taming-the-state-todo-app/tree/7.0.0).
 
-## Hands On: Todo but more Features
+## Практика: Todo но с большими преимуществами
 
-In the Todo application, there are two pieces missing feature-wise: the ability to add a todo and to filter todos by their complete state. Let's begin with the creation of a todo item. First, there needs to be a component where you can type in a todo name and execute its creation.
+В приложении Todo отсутствуют две функциональные составляющие: возможность добавить задачу и отфильтровать задачи по их полному состоянию. Давайте начнем с создания элемента todo. Во-первых, должен быть компонент, в котором вы можете ввести имя todo и выполнить его создание.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -865,7 +865,7 @@ class TodoCreate extends React.Component {
 }
 ~~~~~~~~
 
-Notice again that the component is completely unaware of Redux. It only updates its local `value` state and once the form gets submitted, it uses the local `value` state for the `onAddTodo()` callback function that's accessible in the `props` object. The component doesn't know whether the callback function updates the local state of a parent component or the Redux store. Next, you can use the connected version of this component in the `TodoApp` component.
+Еще раз обратите внимание, что компонент полностью не знает о Redux. Он только обновляет свое локальное состояние `value` и после отправки формы использует локальное состояние `value` для функции обратного вызова `onAddTodo()`, которая доступна в объекте `props`. Компонент не знает, обновляет ли функция обратного вызова локальное состояние родительского компонента или хранилища Redux. Затем вы можете использовать подключенную версию этого компонента в компоненте `TodoApp`.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -883,7 +883,7 @@ function TodoApp() {
 }
 ~~~~~~~~
 
-The last step is to wire the React component to the Redux store by making it a connected component in the first place.
+Последний шаг - подключить компонент React к хранилищу Redux, сделав его подключенным компонентом.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -896,14 +896,14 @@ function mapDispatchToPropsCreate(dispatch) {
 const ConnectedTodoCreate = connect(null, mapDispatchToPropsCreate)(TodoCreate);
 ~~~~~~~~
 
-It uses the `mapDispatchToPropsCreate()` function to get access to the dispatch method of the Redux store. The `doAddTodo()` action creator takes the name of the todo item, coming from the `TodoCreate` component, and generates a unique identifier with the `uuid()` function. The `uuid()` function is a neat little helper function that comes from the [uuid](https://github.com/kelektiv/node-uuid) library. First, you have to install it:
+Он использует функцию `mapDispatchToPropsCreate ()`, чтобы получить доступ к методу диспетчеризации хранилища Redux. Создатель действия `doAddTodo()` берет имя элемента todo, полученного из компонента `TodoCreate`, и генерирует уникальный идентификатор с помощью функции `uuid()`. Функция `uuid()` - это аккуратная маленькая вспомогательная функция, которая поступает из библиотеки [uuid](https://github.com/kelektiv/node-uuid). Сначала вы должны установить его:
 
 {title="Command Line: /",lang="text"}
 ~~~~~~~~
 npm install --save uuid
 ~~~~~~~~
 
-And second, you can import it to generate unique identifiers for you:
+И, во-вторых, вы можете импортировать его для генерации уникальных идентификаторов для вас:
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -919,7 +919,7 @@ import uuid from 'uuid/v4';
 import './index.css';
 ~~~~~~~~
 
-You can try to create a todo item in your Todo application now. It should work. Next you want to make use of your filter functionality to filter the list of todo items by their `completed` property. First, you have to add a `Filter` component.
+Вы можете попробовать создать элемент todo в вашем приложении Todo прямо сейчас. Это должен работать. Затем вы хотите использовать функциональность вашего фильтра для фильтрации списка элементов задач по их свойству `complete`. Во-первых, вы должны добавить компонент `Filter`.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -944,7 +944,7 @@ function Filter({ onSetFilter }) {
 }
 ~~~~~~~~
 
-The `Filter` component only receives a callback function. Again it doesn't know anything about the state management that is happening above in Redux or somewhere else. The callback function is only used in different buttons to set specific filter types. You can use the connected component in the `TodoApp` component again.
+Компонент `Filter` получает только функцию обратного вызова. Опять же, он ничего не знает об управлении состоянием, которое происходит выше в Redux или где-то еще. Функция обратного вызова используется только в разных кнопках для установки определенных типов фильтров. Вы можете снова использовать подключенный компонент в компоненте `TodoApp`.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -961,7 +961,7 @@ function TodoApp() {
 }
 ~~~~~~~~
 
-Last but not least, you have to connect the `Filter` component to actually use it in the `TodoApp` component. It dispatched the `doSetFilter` action creator by passing the filter type from the underlying buttons in the `Filter` component.
+И последнее, но не менее важное: вам нужно подключить компонент `Filter`, чтобы фактически использовать его в компоненте `TodoApp`. Он отправит создателю действия `doSetFilter`, передав тип фильтра из соответствующих кнопок в компоненте `Filter`.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -974,7 +974,7 @@ function mapDispatchToPropsFilter(dispatch) {
 const ConnectedFilter = connect(null, mapDispatchToPropsFilter)(Filter);
 ~~~~~~~~
 
-When you start your Todo application now, you will see that the `filterState` will change once you click on one of your filter buttons. But nothing happens to your displayed todos. They are not filtered and that's because in your selector you select the whole list of todos. The next step would be to adjust the selector to only select the todos in the list that are matching the filter. First, you can define filter functions that match todos according to their `completed` state.
+Когда вы сейчас запустите приложение Todo, вы увидите, что `filterState` изменится, когда вы нажмете одну из кнопок фильтра. Но ничего не происходит с вашими показанными задачами. Они не фильтруются, и это потому, что в вашем селекторе вы выбираете весь список задач. Следующим шагом будет настройка селектора для выбора только тех задач в списке, которые соответствуют фильтру. Во-первых, вы можете определить функции фильтра, которые соответствуют задачам в соответствии с их состоянием `completed`.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -987,7 +987,7 @@ const VISIBILITY_FILTERS = {
 };
 ~~~~~~~~
 
-Second, you can use your selector to only select the todos matching a filter. You already have all selectors in place. But you need to adjust one of them to filter the todos according to the `filterState` from the Redux store.
+Во-вторых, вы можете использовать свой селектор, чтобы выбрать только те задачи, которые соответствуют фильтру. У вас уже есть все селекторы на месте. Но вам нужно настроить один из них для фильтрации задач в соответствии с `filterState` из хранилища Redux.
 
 {title="src/index.js",lang="javascript"}
 ~~~~~~~~
@@ -1007,6 +1007,6 @@ function getTodo(state, todoId) {
 }
 ~~~~~~~~
 
-Since your state is normalized, you have to map through all your `ids` to get a list of `todos`, filter them by `filterState`, and map them back to 'ids'. That's a tradeoff you are going when normalizing your data structure, because you always have to denormalize it at some point. Your filter functionality should work once you start your application again.
+Поскольку ваше состояние нормализовано, вы должны пройти через все ваши `ids`, чтобы получить список `todos`, отфильтровать их по `filterState` и отобразить их обратно в 'ids'. Это компромисс, на который вы идете, когда нормализуете свою структуру данных, потому что вы всегда должны денормализовать ее в какой-то момент. Функциональность вашего фильтра должна работать, как только вы снова запустите свое приложение.
 
-You can find the final application in this [GitHub repository](https://github.com/rwieruch/taming-the-state-todo-app/tree/8.0.0). It applies all the learnings about the Redux middleware, immutable and normalized data structures and selectors.
+Финальное приложение вы можете найти в этом [GitHub-репозитории](https://github.com/rwieruch/taming-the-state-todo-app/tree/8.0.0). Он содержит применение всех знаний о промежуточном программном обеспечении Redux, неизменяемых и нормализованных структурах данных и селекторах.
