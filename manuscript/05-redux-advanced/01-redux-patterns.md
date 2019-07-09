@@ -1,12 +1,12 @@
-# Redux Patterns, Techniques and Best Practices
+# Шаблоны, методики и лучшие практики Redux
 
-There are several patterns and best practices that you can apply in a Redux application. I will go through a handful of them to point you in the right direction. However, the evolving patterns and best practices around the ecosystem are changing all the time. You will want to read more about these topics on your own.
+Существует несколько шаблонов и рекомендаций, которые вы можете применить в приложении Redux. Я пройдусь через несколько из них, чтобы указать вам правильное направление. Однако развивающиеся модели и лучшие практики вокруг экосистемы постоянно меняются. Вам захочется прочитать больше об этих темах самостоятельно.
 
-## Using JavaScript ES6
+## Использование JavaScript ES6
 
-So far, you have written your Redux code mostly in JavaScript ES5. Redux is inspired by the functional programming paradigm and uses a lot of its concepts: immutable data structures and pure functions. When using Redux in your scaling application, you will often find yourself using pure functions that solve only one problem. For instance, an action creator only returns an action object, a reducer only returns the new state and a selector only returns derived properties. You will embrace this mental model and use it in Redux agnostic code, too. You will see yourself more often using functions that only solve one problem, using higher-order functions to return functions and compose functions into each other. You will move toward a functional programming style with Redux.
+Пока что вы написали свой код Redux в основном на JavaScript ES5. Redux вдохновлен парадигмой функционального программирования и использует множество ее концепций: неизменяемые структуры данных и чистые функции. При использовании Redux в масштабирующем приложении вы часто используете чистые функции, которые решают только одну проблему. Например, создатель действия возвращает только объект действия, редуктор возвращает только новое состояние, а селектор возвращает только извлеченные свойства. Вы примете эту ментальную модель и будете использовать ее в коде, независимом от Redux. Вы будете чаще видеть себя использующими функции, которые решают только одну проблему, используя функции высшего порядка для возврата функций и составления функций друг в друга. Вы будете двигаться в направлении функционального стиля программирования с Redux.
 
-JavaScript ES6 and beyond complements the functional programming style in JavaScript perfectly. You only have to look at the following example to understand how much more concisely higher-order functions can be written with JavaScript ES6 arrow functions.
+JavaScript ES6 и более поздние версии прекрасно дополняют функциональный стиль программирования в JavaScript. Вам нужно только взглянуть на следующий пример, чтобы понять, как много более кратких функций высшего порядка можно написать с помощью стрелочных функций JavaScript ES6.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -21,7 +21,7 @@ function higherOrderFunction(foo) {
 const higherOrderFunction = (foo) => (bar) => { ... };
 ~~~~~~~~
 
-It's a higher-order function that is much more readable in JavaScript ES6. You will find yourself using higher-order functions more often when programming in a functional style. It will happen that you not only use one higher-order function, but a higher-order function that returns a higher-order function that returns a function. Again it becomes easier to read when using JavaScript ES6.
+Это функция высшего порядка, которая гораздо более читаема в JavaScript ES6. Вы будете чаще использовать функции высшего порядка при программировании в функциональном стиле. Может случиться, что вы используете не просто функцию высшего порядка, но функцию высшего порядка, которая возвращает функцию высшего порядка, которая возвращает функцию. Снова становится легче читать при использовании JavaScript ES6.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -39,6 +39,7 @@ const higherOrderFunction = (foo) => (bar) => (qwe) => { ... };
 ~~~~~~~~
 
 I encourage you to apply these in your Redux code. It would turn out the following way:
+Я призываю вас применить их в своем коде Redux. Может получиться так:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -58,20 +59,20 @@ const showNotificationWithDelay = (text) => (dispatch) => {
 }
 ~~~~~~~~
 
-The JavaScript community made a great shift toward functional programming with the rising popularity of React and Redux. Functional programming let's you write more predictable code by embracing pure functions, raising awareness about side-effects, and keeping data structures immutable. JavaScript ES6 and beyond make it easier and more readable to write in a functional style.
+Сообщество JavaScript сделало большой шаг в сторону функционального программирования с ростом популярности React и Redux. Функциональное программирование позволяет вам писать более предсказуемый код, используя чистые функции, повышая осведомленность о побочных эффектах и сохраняя неизменность структур данных. JavaScript ES6 и более поздние версии делают его более удобным для чтения и написания в функциональном стиле.
 
-## Naming Conventions
+## Соглашения об именовании
 
-In Redux, you have a handful of different types of functions. You have action creators, selectors and reducers. It is always good to name them accordingly to their type. Other developers will have an easier time identifying the function type. Just following a naming convention for your functions, you can give yourself and others valuable information about the function itself.
+В Redux у вас есть несколько различных типов функций. У вас есть создатели действий, селекторы и редукторы. Это всегда хорошо, чтобы назвать их в соответствии с их типом. Другим разработчикам будет легче определить тип функции. Просто следуя соглашению об именах для ваших функций, вы можете дать себе и другим ценную информацию о самой функции.
 
-Personally, I follow this naming convention with Redux functions. It uses prefixes for each function type:
+Лично я соблюдаю это соглашение об именах с функциями Redux. Оно использует префиксы для каждого типа функции:
 
-* action creators: **do**Something
-* reducers: **apply**Something
-* selectors: **get**Something
-* sagas: **watch**Something, **handle**Something
+* оздатели действий: **do**Something
+* редукторы: **apply**Something
+* селекторы: **get**Something
+* саги: **watch**Something, **handle**Something
 
-In the previous chapters, the example code always used this naming convention. In addition, it clarifies things when using higher-order functions. Remember the `mapDispatchToProps()` function when connecting Redux to React?
+В предыдущих главах пример кода всегда использовал это соглашение об именах. Кроме того, это проясняет вещи при использовании функций высшего порядка. Помните функцию `mapDispatchToProps()` при подключении Redux к React?
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -84,9 +85,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 ~~~~~~~~
 
-The functions themselves become more concise by using JavaScript ES6 arrow functions. But there is another clue that makes proper naming so powerful. Solely from a naming perspective, you can see that the `mapStateToProps()` and `mapDispatchToProps()` functions transform the returned properties from the Redux world to the React world. The connected component doesn't know about selectors or actions creators anymore. As you can see, that is already expressed in the transformed props and functions. They are named `todos` and `onToggleTodo`. There are no remains from the Redux world, from a technical perspective but also from a pure naming perspective. That's powerful, because your underlying components are Redux agnostic.
+Сами функции становятся более краткими благодаря использованию стрелочных функций JavaScript ES6. Но есть и другая подсказка, которая делает правильное именование настолько мощным. Только с точки зрения именования вы можете видеть, что функции `mapStateToProps()` и `mapDispatchToProps()` преобразуют возвращаемые свойства из мира Redux в мир React. Подключенный компонент больше не знает о селекторах или создателях действий. Как видите, это уже выражено в преобразованных реквизитах и функциях. Они называются `todos` и `onToggleTodo`. Там нет остатков от мира Redux, с технической точки зрения, но и с точки зрения чистого именования. Это мощно, потому что ваши базовые компоненты не зависят от Redux.
 
-So far, the chapter was only about the naming of functions in the Redux world. But there is another part in Redux that can be named properly: action types. Consider the following action type names:
+Пока что глава посвящена только именам функций в мире Redux. Но есть и другая часть в Redux, которую можно правильно назвать: типы действий. Рассмотрим следующие имена типов действий:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -94,7 +95,7 @@ const ADD_TODO = 'ADD_TODO';
 const TODO_ADD = 'TODO_ADD';
 ~~~~~~~~
 
-Most cultures read from left to right. That's conveyed in programming, too. So which action type naming makes more sense? Is it the verb or the subject? You can decide on your own, but become clear about a consistent naming convention for your action types. Personally, I find it easier to scan when I have the subject, the domain in this case, first. When using Redux Logger in a scaling application where a handful actions can be dispatched at once, I find it easier to scan by subject than by verb. You can even go one step further and apply the subject as domain prefix for your action types:
+Большинство культур читают слева направо. Это выражается и в программировании. Так какой тип именования действий имеет больше смысла? Это глагол или предмет? Вы можете принять решение по своему усмотрению, но составьте четкое представление о согласованном соглашении об именах для ваших типов действий. Лично мне легче сканировать, когда у меня есть тема, в данном случае область. Когда я использую Redux Logger в масштабирующем приложении, в которое можно отправить сразу несколько действий, мне легче сканировать по предмету, чем по глаголу. Вы даже можете пойти еще дальше и применить тему в качестве префикса домена для ваших типов действий:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -102,18 +103,19 @@ const todo/ADD = 'todo/ADD';
 ~~~~~~~~
 
 These are only opinionated naming conventions for these types of functions and constants (action types) in Redux. You can come up with your own. But do yourself and your fellow developers a favor and reach an agreement first and then apply them consistently through your code base.
+Это только условные соглашения об именах для этих типов функций и констант (типов действий) в Redux. Вы можете придумать свое. Но сделайте себе и своим коллегам-разработчикам услугу и сначала достигните соглашения, а затем последовательно применяйте их в своей кодовой базе.
 
-## The Relationship between Actions and Reducers
+## Связь между действиями и редукторами
 
-Actions and reducers are not strictly coupled. They only share an action type. A dispatched action, for example with the action type `TODO_ADD`, can be captured in multiple reducers that utilize `TODO_ADD`. You have done it before in the `todoReducer` and `notificationReducer`. That's an important fact when implementing a larger state management architecture in your application.
+Действия и редукторы не являются строго связанными. Их объединяет только тип действия. Отправленное действие, например, с типом действия `TODO_ADD`, может быть зафиксировано в нескольких редукторах, которые используют `TODO_ADD`. Вы делали это раньше в `todoReducer` и `messagesReducer`. Это важный факт при реализации более широкой архитектуры управления состоянием в вашем приложении.
 
-When coming from an object-oriented programming background though, you might abuse actions/reducers as setters and selectors as getters. You will couple actions and reducers in a 1:1 relationship. I will call it the **command pattern** in Redux. It can be useful in some scenarios, as I will point out later, but in general it's not the philosophy of Redux.
+Если исходить из опыта объектно-ориентированного программирования, вы можете злоупотреблять действиями/редукторами как сеттерами, а селекторы - как геттерами. Вы будете сочетать действия и редукторы в соотношении 1:1. Я назову это **шаблон команды** в Redux. Это может быть полезно в некоторых сценариях, как я укажу позже, но в целом это не философия Redux.
 
-Redux can be seen as event bus of your application. You can send events (actions) with a payload and an identifier (action type) into the bus and it will pass potential consumer (reducers). Only a part of these consumers is interested in the event. That's what I call the **event pattern** that Redux embraces.
+Redux можно рассматривать как шину событий вашего приложения. Вы можете отправлять события (действия) с полезной нагрузкой и идентификатором (типом действия) в шину, и они будут передаваться потенциальному потребителю (редукторам). Только часть этих потребителей заинтересована в событии. Это то, что я называю **шаблоном событий**, который использует Redux.
 
-You can say that the higher you place your actions on the spectrum of abstraction, the more reducers are interested in it. The action becomes an event. The lower you place your actions on the spectrum of abstraction, the less reducers are interested in it. In the end, most often only one reducer can consume it when it is placed on a lower place of the spectrum of abstraction. The action becomes a command. It is a concrete action rather than an abstract action. It is important to note, though, that you have to keep the balance between abstraction and concreteness. Too abstract actions can lead to a mess when too many reducers consume it. Too concrete actions might only be used by one reducer all the time. Most developers run into the latter scenario though. In Redux, obviously depending on your application, it should be a healthy balance of both.
+Вы можете сказать, что чем выше вы размещаете свои действия в спектре абстракции, тем больше редукторов в нем заинтересованы. Действие становится событием. Чем ниже вы размещаете свои действия в спектре абстракции, тем меньше редукторов в нем заинтересованы. В конце концов, чаще всего его может потреблять только один редуктор, когда он находится на более низком месте спектра абстракции. Действие становится командой. Это конкретное действие, а не абстрактное действие. Однако важно отметить, что вы должны соблюдать баланс между абстракцией и конкретностью. Слишком абстрактные действия могут привести к путанице, когда слишком много редукторов используют его. Слишком конкретные действия могут быть использованы только одним редуктором все время. Большинство разработчиков сталкиваются с последним сценарием. В Redux, очевидно, в зависимости от вашего приложения, это должен быть здоровый баланс обоих.
 
-In the book, you have encountered a relationship of 1:1 between action and reducer most of the time (except for the `TODO_ADD` action). Let's take an action that completes a todo item as demonstration:
+В этой книге вы большую часть времени встречали связь 1:1 между действием и редуктором (за исключением действия `TODO_ADD`). Давайте выполним действие, которое завершает элемент todo в качестве демонстрации:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -134,7 +136,7 @@ function todosReducer(state = [], action) {
 }
 ~~~~~~~~
 
-Now, imagine that there should be a measuring of the progress of the Todo application user. The progress will always start at zero when the user opens the application. When a todo gets completed, the progress should increase by one. A potentially easy solution could be counting all completed todo items. However, since there could be completed todo items already, and you want to measure the completed todo items in this session, the solution would not suffice. The solution could be a second reducer that counts the completed todos in this session.
+Теперь представьте, что должно быть измерение прогресса пользователя приложения Todo. Ход выполнения всегда начинается с нуля, когда пользователь открывает приложение. Когда задача завершена, прогресс должен увеличиться на единицу. Потенциально простым решением может быть подсчет всех завершенных задач. Однако, поскольку уже могут быть завершенные элементы задач, и вы хотите измерить завершенные элементы задач в этом сеансе, этого решения будет недостаточно. Решением может быть второй редуктор, который считает завершенные задачи в этом сеансе.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -148,7 +150,7 @@ function progressReducer(state = 0, action) {
 }
 ~~~~~~~~
 
-The counter will increment when a todo got completed. Now, you can easily measure the progress of your users when they complete todo items. Suddenly, you have a 1:2 relationship between action and reducer. The action that is used for completing a todo item is consumed by two reducers. Nobody forces you not to couple action and reducer in a 1:1 relationship, but it always makes sense to be creative in this manner. What would happen otherwise? Regarding the progress measurement issue, you might have to come up with a second action type and couple it to the previous reducer:
+Счетчик будет увеличиваться при завершении задачи. Теперь вы можете легко измерить прогресс ваших пользователей, когда они завершают задачи. Внезапно между действием и редуктором возникает соотношение 1:2. Действие, которое используется для завершения элемента todo, выполняется двумя редукторами. Никто не заставляет вас объединять действия и редукторы в отношении 1:1, но всегда имеет смысл проявлять творческий подход в этом отношении. Что может случится в противном случае? Что касается проблемы измерения прогресса, вам, возможно, придется придумать второй тип действия и связать его с предыдущим редуктором:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -172,7 +174,7 @@ function progressReducer(state = 0, action) {
 }
 ~~~~~~~~
 
-The action would be dispatched in parallel with the `COMPLETE_TODO` action.
+Действие будет отправлено параллельно с действием `COMPLETE_TODO`.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -180,22 +182,22 @@ dispatch(doCompleteTodo('0'));
 dispatch(doTrackProgress());
 ~~~~~~~~
 
-But that would miss the point in Redux. You would want to come up with these commonalities to make your actions more abstract and be used by multiple reducers. My rule of thumb for this: Approach your actions as concrete actions with a 1:1 relationship to their reducers, but keep yourself always open to reuse them as more abstract actions in other reducers.
+Но это упустило бы смысл Redux. Вы хотели бы придумать эти общие черты, чтобы сделать ваши действия более абстрактными и использовались несколькими редукторами. Мое эмпирическое правило: подходите к своим действиям как к конкретным действиям с отношением 1:1 с их редукторам, но всегда оставайтесь открытыми и используйте их как более абстрактные действия в других редукторах.
 
-## Folder Organization
+## Организация папок
 
-Eventually, your Redux application grows and you cannot manage everything - reducers, action creators, selectors, store and view - in one file. You will have to split up the files. Fortunately, JavaScript ES6 brings [import](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/import) and [export](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/export) statements to distribute functionalities in files. If you are not familiar with these, you should read about them.
+Со временем ваше приложение Redux растет, и вы не можете управлять всем - редукторами, создателями действий, селекторами, хранилищем и представлением - в одном файле. Вам придется разделить файлы. К счастью, JavaScript ES6 предосталяет [import](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/import) и [export](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/export) операторы для распределения функций в файлах. Если вы не знакомы с ними, вы должны прочитать о них.
 
-In this chapter, I want to show you two approaches to organize your folder and files in a Redux application. The first approach, the **technical folder organization**, is used in smaller applications. Once your application scales and more than one team in your organization is working on the project, you can consider the **feature folder organization**. In addition, you will learn about best practices for your file and folder structure in this chapter.
+В этой главе я хочу показать вам два подхода к организации вашей папки и файлов в приложении Redux. Первый подход, **техническая организация папок**, используется в небольших приложениях. Когда ваше приложение масштабируется и над проектом работает более одной команды, вы можете рассмотреть **функциональную организацию папок**. Кроме того, в этой главе вы узнаете о передовых практиках для структуры файлов и папок.
 
-### Technical Folder Organization
+### Техническая организация папок
 
-The technical separation of concerns is used in smaller applications. Basically, in my opinion, there are two requirements to use this approach:
+Техническое разделение интересов используется в небольших приложениях. В принципе, на мой взгляд, есть два требования для использования этого подхода:
 
-* the application is managed by only one person or one team, thus has less conflict potential when working on the same code base
-* the application is small from a lines of code perspective and *can* be managed by one person or one team
+* приложением управляет только один человек или одна команда, поэтому имеет меньший конфликтный потенциал при работе с одной и той же кодовой базой
+* приложение маленькое с точки зрения кода и *может* управляться одним человеком или одной командой
 
-In conclusion, it depends on the size of the team and the size of the code base. Now, how to separate the files? They get separated by their technical aspects:
+В заключение, все зависит от размера команды и размера базы кода. Теперь, как разделить файлы? Они разделяются по своим техническим аспектам:
 
 {title="Folder Organization",lang="text"}
 ~~~~~~~~
@@ -208,7 +210,7 @@ In conclusion, it depends on the size of the team and the size of the code base.
 --components
 ~~~~~~~~
 
-The reducers, action creators, selectors and store should be clear. In these folders you have all the different aspects of Redux. In the components folder you have your view layer. When using React, that would be the place where you will find your React components. In the constants folder you can have any constants, but also the action types of Redux. These can be imported in the action creators and reducers. An elaborated folder/file organization split by technical aspects might look like the following:
+Редукторы, создатели действий, селекторы и хранилище должны быть чистыми. В этих папках у вас есть все аспекты Redux. В папке компонентов у вас есть слой представления. При использовании React, это будет место, где вы найдете ваши компоненты React. В папке констант вы можете иметь любые константы, а также типы действий Redux. Их можно импортировать в создателей действия и редукторы. Детализированная организация папок/файлов, разделенная по техническим аспектам, может выглядеть следующим образом:
 
 {title="Folder Organization",lang="text"}
 ~~~~~~~~
@@ -236,11 +238,11 @@ The reducers, action creators, selectors and store should be clear. In these fol
 ---Notifications.js
 ~~~~~~~~
 
-What are the advantages and disadvantages of this approach? The most important advantage is that reducers and action creators are not coupled. They are loosely arranged in their folders. It embraces the notion of Redux to capture any action in any reducer. Reducers and action creators are not in a 1:1 relationship. In addition, all Redux functionalities are reachable from a top level. None of these functionalities are hidden in a lower level and thus less accessible. This approach embraces the event pattern which was mentioned before. A disadvantage of this approach, hence the two requirements, is that it doesn't scale well. Each technical folder will grow endlessly. There are no constraints except for the separation by type. It can become messy after you have introduced several reducers, action creators and selectors.
+Каковы преимущества и недостатки этого подхода? Наиболее важным преимуществом является то, что редукторы и создатели действий не связаны. Они свободно расположены в своих папках. Он охватывает идею Redux для захвата любых действий в любом редукторе. Редукторы и создатели действий не находятся в соотношении 1:1. Кроме того, все функциональные возможности Redux доступны с верхнего уровня. Ни одна из этих функций не скрыта на более низком уровне и, следовательно, более доступна. Этот подход охватывает шаблон событий, который был упомянут ранее. Недостаток этого подхода, а следовательно, и двух требований, заключается в том, что он плохо масштабируется. Каждая техническая папка будет расти бесконечно. Нет ограничений, кроме разделения по типу. Это может стать беспорядком после того, как вы создадите несколько редукторов, создателей действий и селекторов.
 
-### Feature Folder Organization
+### Функциональную организацию папок
 
-The second approach, the separation by feature, is most often used in larger applications. You have a greater flexibility in grouping the features, because you can always split up bigger features to smaller ones and thus keep the folders lightweight.
+Второй подход, разделение по функции, чаще всего используется в более крупных приложениях. У вас больше гибкости в группировании функций, потому что вы всегда можете разделить большие функции на более мелкие и таким образом сохранить папки легкими.
 
 {title="Folder Organization",lang="text"}
 ~~~~~~~~
@@ -251,7 +253,7 @@ The second approach, the separation by feature, is most often used in larger app
 --store
 ~~~~~~~~
 
-An elaborated folder/file organization might look like the following:
+Детализированная организация папок/файлов может выглядеть следующим образом:
 
 {title="Folder Organization",lang="text"}
 ~~~~~~~~
@@ -276,15 +278,15 @@ An elaborated folder/file organization might look like the following:
 ---store.js
 ~~~~~~~~
 
-This approach, separating by features, is way more flexible than the previous approach. It gives you more freedom to arrange your folders and files as features. When using this approach, there are more ways to accomplish it. You don't necessarily have to follow the example above.
+Этот подход, разделяющий по функциям, является более гибким, чем предыдущий подход. Это дает вам больше свободы для размещения ваших папок и файлов по функциям. При использовании этого подхода есть больше способов сделать это. Вам не обязательно следовать примеру выше.
 
-What are the advantages and disadvantages of this approach? It has the same advantages and disadvantages as the technical folder organization but negated. Instead of making action creators and reducers accessible on a top level, they are hidden in a feature folder. In a scaling application with multiple teams, other teams will most likely not reuse your action creators and reducers but implement their own. Another disadvantage is that it groups action creators and reducers in a 1:1 relationship which goes against the overarching idea of Redux. You embrace a command pattern instead of an event pattern. The advantage on the other side, and that's why most teams in a scaling application are using this approach, is that it grows well. Teams can work on separate feature folders and don't run into conflicts. Still, they can follow the overarching state management flow, when using a middleware library like redux-logger.
+Каковы преимущества и недостатки этого подхода? Он имеет те же преимущества и недостатки, что и техническая организация папок, но противоположные. Вместо того, чтобы создавать создателей и редукторов действий на верхнем уровне, они скрыты в папке функций. В масштабируемом приложении с несколькими командами другие команды, скорее всего, не будут повторно использовать ваши создатели действий и редукторы, а будут реализовывать свои собственные. Другим недостатком является то, что он группирует создателей действий и редукторов в соотношении 1:1, что противоречит всеобъемлющей идее Redux. Вы включаете шаблон команды вместо шаблона события. Преимущество с другой стороны, и именно поэтому большинство команд в масштабирующем приложении используют этот подход, заключается в том, что оно хорошо развивается. Команды могут работать с отдельными папками и не сталкиваться с конфликтами. Тем не менее они могут следовать всеобъемлющему потоку управления состоянием при использовании библиотеки промежуточного ПО, такой как redux-logger.
 
-Even though the feature folder organization bears a lot of pitfalls by embracing the command pattern which was mentioned earlier, it is often used in scaling applications with several development teams. Therefore, I can give one crucial advice to this approach: Try to make your action creators, reducers and selectors accessible to everyone so that they can be reused. It can happen by documentation, word of mouth or another variation of folder/file organization.
+Несмотря на то, что функциональная организация папок несет много ловушек, поскольку она использует шаблон команды, упомянутый ранее, она часто используется при масштабировании приложений с несколькими группами разработчиков. Поэтому я могу дать один важный совет этому подходу: постарайтесь сделать свои создатели действий, редукторы и селекторы доступными для всех, чтобы их можно было повторно использовать. Это может прописать в документации, передавать из уст в уста или выбрав другой вариант организации папок/файлов.
 
 ### Ducks
 
-In Redux, there exists another concept called ducks. It relates to the organization of action creators, action types and reducers as tuples. The ducks concept bundles these tuples into self contained modules. Often, these modules end up being only one file. The official ducks pattern has a bunch of guidelines which you can read up in the [GitHub repository](https://github.com/erikras/ducks-modular-redux). However, you wouldn't need to apply all of these. For instance, in the Todo application a duck file for the filter domain might look like the following:
+В Redux существует еще одна концепция, называемая ducks. Это относится к организации создателей действий, типов действий и редукторов как кортежей. Концепция ducks объединяет эти кортежи в автономные модули. Часто эти модули заканчиваются только одним файлом. В официальном шаблоне ducks есть несколько рекомендаций, которые вы можете прочитать в [GitHub repository](https://github.com/erikras/ducks-modular-redux). Однако вам не нужно применять все это. Например, в приложении Todo файл ducks для раздела фильтра может выглядеть следующим образом:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -317,41 +319,42 @@ export {
 };
 ~~~~~~~~
 
-The same file structure would apply for the notification feature and the todo feature itself. The drawbacks of the ducks concept are similar to the feature folder approach. You couple actions and reducers, hence no one will embrace to capture actions in multiple reducers. As long as action and reducer are coupled, the ducks concept makes sense. Otherwise, it shouldn't be applied too often. Instead, you should embrace the idea of Redux to keep your reducers and action creators accessible on a top level.
+Та же файловая структура будет применяться для функции уведомления и самой функции todo. Недостатки концепции ducks аналогичны подходу папок объектов. Вы объединяете действия и редукторы, поэтому никто не будет охватывать действия в нескольких редукторах. Пока действие и редуктор связаны, концепция уток имеет смысл. В противном случае, это не должно применяться слишком часто. Вместо этого вы должны принять идею Redux, чтобы ваши редукторы и создатели действий были доступны на верхнем уровне.
 
-## Testing
+## Тестирование
 
-The book will not dive deeply into the topic of testing, but it shouldn't be unmentioned. Testing your code in programming is essential and should be seen as mandatory. You want to keep the quality of your code high and an assurance that everything works. However, testing your code can often be tedious. You have to setup, mock or spy things before you can finally start to test it. Or you you have to cover a ton of edge cases in your one huge code block. But I can give you comfort by saying that this is not the case when testing state management done with Redux. I will show you how you can easily test the necessary parts, keep your efforts low and stay lazy.
+Книга не будет глубоко погружаться в тему тестирования, но стоит упоминать о ней. Тестирование вашего кода в программировании необходимо и должно рассматриваться как обязательное. Вы хотите поддерживать высокое качество своего кода и гарантировать, что все работает. Однако тестирование вашего кода часто может быть утомительным. Вы должны настроить, смоделировать или предположить вещи, прежде чем вы сможете, наконец, начать тестировать это. Или вы должны покрыть тонну крайних случаев в вашем огромном блоке кода. Но я могу успокоить вас, сказав, что это не тот случай, когда тестирование управления состоянием выполняется с помощью Redux. Я покажу вам, как вы можете легко проверить необходимые детали, сохранить свои усилия на низком уровне и оставаться ленивым.
 
-Perhaps you have heard about the testing pyramid. There are end-to-end tests, integration tests and unit tests. If you are not familiar with those, the book gives you a quick and basic overview. A unit test is used to test an isolated and small block of code. It can be a single function that is tested by an unit test. However, sometimes the units work well in isolation yet don't work in combination with other units. They need to be tested as a group as units. That's where integration tests can help out by covering whether units work well together. Last but not least, an end-to-end test is the simulation of a real user scenario. It could be an automated setup in a browser simulating the login flow of an user in a web application. While unit tests are fast and easy to write and to maintain, end-to-end tests are the opposite of this spectrum.
+Возможно, вы слышали об пирамиде испытаний. Существуют сквозные тесты, интеграционные и модульные тесты. Если вы не знакомы с ними, книга даст вам быстрый и базовый обзор. Модульный тест используется для проверки изолированного и небольшого блока кода. Это может быть одна функция, которая проверяется модульным тестом. Тем не менее, иногда единицы работают хорошо в изоляции, но не работают в сочетании с другими единицами. Они должны быть проверены как группа единиц. Вот где интеграционные тесты могут помочь, рассмотрев, хорошо ли работают единицы. Наконец, что не менее важно, сквозной тест - это симуляция сценария реального пользователя. Это может быть автоматическая настройка в браузере, имитирующая вход пользователя в веб-приложение. В то время как модульные тесты являются быстрыми и простыми в написании и обслуживании, сквозные тесты являются противоположностью этого спектра.
 
-How many tests do I need of each type? You want to have many unit tests to cover your isolated functions. After that, you can have several integration tests to cover that the most important functions work in combination as expected. Last but not least, you might want to have only a few end-to-end tests to simulate critical scenarios in your web application. That's it for the general excursion in the world of testing. Now, how does it apply to state management with Redux?
+Сколько тестов мне нужно для каждого типа? Вам следует иметь много модульных тестов, чтобы охватить ваши изолированные функции. После этого вы можете провести несколько интеграционных тестов, чтобы понять, что наиболее важные функции работают в комбинации, как и ожидалось. И последнее, но не менее важное: вам может понадобиться всего несколько сквозных тестов для имитации критических сценариев в вашем веб-приложении. Вот и все для общей экскурсии в мире тестирования. Теперь, как это относится к управлению состоянием с Redux?
 
-Redux embraces the functional programming style. Your functions are pure and you don't have to worry about any side-effects. A function always returns the same output for the same input. Such functions are easy to test, because you only have to give them an input and expect the output because there is a no side-effect guarantee. That's the perfect fit for unit tests, isn't it? In conclusion, it makes state management testing when build with Redux a pleasure.
+Redux охватывает стиль функционального программирования. Ваши функции чисты, и вам не нужно беспокоиться о каких-либо побочных эффектах. Функция всегда возвращает один и тот же результат для одних и тех же входных данных. Такие функции легко проверить, потому что вам нужно только дать им входные данные и ожидать результата, потому что есть гарантия отсутсвия побочных эффектов. Это идеально подходит для юнит-тестов, не так ли? В заключение, это делает тестирование управления состоянием при сборке с Redux приятным.
 
-In Redux, you have different groups of functions: action creators, reducers, selectors. For each of these groups, you can see a pattern for their input and output. These can be applied to a test pattern which can be used as blueprint for a unit test for each group of functions.
+В Redux у вас есть разные группы функций: создатели действий, редукторы, селекторы. Для каждой из этих групп вы можете увидеть шаблон для их вводных данных и результата. Они могут быть применены к тестовому шаблону, который может использоваться в качестве схемы для модульного теста для каждой группы функций.
 
-Input Pattern:
+Шаблон входных данных:
 
-* action creators can have an optional input that becomes their optional payload
-* selectors can have an optional input that supports them to select the substate
-* reducers will always receive a previous state and action
+* создатели действий могут иметь дополнительные входные данные, которые становятся их дополнительной полезной нагрузкой
+* селекторы могут иметь дополнительные входные данные, который облегчают выбор подсостояния
+* редукторы всегда получат предыдущее состояние и действие
 
-Output Pattern:
+Шаблон результата:
 
-* action creators will always return an object with a type and optional payload
-* selectors will always return a substate of the state
-* reducers will always return a new state
+* создатели действий всегда будут возвращать объект с типом и дополнительной полезной нагрузкой
+* селекторы всегда возвращают подсостояние состояния
+* редукторы всегда будут возвращать новое состояние
 
-Test Pattern:
+Шаблон тестирования:
 
-* when invoking an action creator, the correct return object should be expected
-* when invoking a selector, the correct substate should be expected
-* when invoking a reducer, the correct new state should be expected
+* при вызове создателя действия следует ожидать правильного возвращаемого объекта
+* при вызове селектора следует ожидать правильного подсостояния
+* при вызове редуктора следует ожидать правильного нового состояния
 
 How does that apply in code? The book will show it in pseudo code, because it will not make any assumption about your testing libraries. Yet it should be sufficient to pick up these patterns for each group of functions (action creators, reducers, selectors) to apply them in your unit tests.
+Как это применимо в коде? Книга покажет это в псевдокоде, потому что не будет делать никаких предположений о ваших тестовых библиотеках. Тем не менее, должно быть достаточно подобрать эти шаблоны для каждой группы функций (создатели действий, редукторы, селекторы), чтобы применить их в своих модульных тестах.
 
-*Action Creators:*
+*Создатели действий:*
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -367,7 +370,7 @@ const expectedAction = {
 expect(action).to.equal(expectedAction);
 ~~~~~~~~
 
-*Selectors:*
+*Селекторы:*
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -381,7 +384,7 @@ const expectedSubstate = { ... };
 expect(substate).to.equal(expectedSubstate)
 ~~~~~~~~
 
-*Reducers:*
+*Редукторы:*
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -397,11 +400,11 @@ const expectedNewState = { ... };
 expect(newState).to.equal(expectedNewState);
 ~~~~~~~~
 
-These test patterns will always stay the same for their aspects in Redux. You only have to fill in the blanks. You can even give yourself an easier time and setup automated code snippets for your editor of choice. For instance, typing "rts" (abbr. for "redux test selector") gives you the blueprint for a selector test. The other two snippets could be "rtr" (redux test reducer) and "rta" (redux test action). After that, you only have to fill in the remaining things.
+Эти тестовые шаблоны всегда остаются неизменными для своих аспектов в Redux. Вам нужно только заполнить пробелы. Вы даже можете упростить себе задачу и настроить автоматические фрагменты кода для своего редактора. Например, ввод "rts" (сокращенное обозначение "redux test selector") даст вам сниппет теста селектора. Двумя другими фрагментами могут быть "rtr" (redux test reducer) и "rta" (redux test action). После этого вам нужно только заполнить оставшиеся вещи.
 
-These test patterns for state management show you how simple testing becomes when working with the clear constraints of a library like Redux. Everything behaves the same, it is predictable, and thus can be tested every time the in the same way. When setting up automated code snippets, you will save yourself a lot of time, yet have a great test coverage for your whole state management. You can even go one step further and apply [test-driven development (TDD)](https://en.wikipedia.org/wiki/Test-driven_development) which basically means you test before you implement.
+Эти тестовые шаблоны для управления состоянием показывают, насколько простым становится тестирование при работе с четкими ограничениями библиотеки, такой как Redux. Все ведет себя одинаково, это предсказуемо и, следовательно, может быть проверено каждый раз одинаково. При настройке автоматических фрагментов кода вы сэкономите много времени, но при этом получите отличное покрытие тестами для всего управления состоянием. Вы даже можете пойти еще дальше и применить [разработку через тестирование (TDD)](https://en.wikipedia.org/wiki/Test-driven_development), что в основном означает, что вы тестируете перед внедрением.
 
-There is another neat helper that can ensure that your state stays immutable. Because you never know if you accidentally mutate your state even though it is forbidden in Redux. I guess, there is a handful of libraries around this topic, but I use [deep-freeze](https://github.com/substack/deep-freeze) in my tests to ensure that the state (and even actions) doesn't get mutated.
+Есть еще один аккуратный помощник, который может гарантировать, что ваше состояние остается неизменным. Потому что вы никогда не знаете, не изменили ли вы случайно свое состояние, даже если это запрещено в Redux. Я думаю, есть несколько библиотек по этой теме, но я использую [deep-freeze](https://github.com/substack/deep-freeze) в своих тестах, чтобы гарантировать, что состояние (и даже действия) не изменяются
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -425,15 +428,15 @@ const expectedNewState = { ... };
 expect(newState).to.equal(expectedNewState);
 ~~~~~~~~
 
-That's it for testing your different aspects when using Redux. It can be accomplished by using unit tests. You could apply integration tests, too, for instance to test an action creator and reducer altogether. After all, you have a blueprint for testing these functions all the time at your hand and there is no excuse anymore to not test your code. If you want to dive into a testing setup for your React application, checkout this [React testing setup and usage walkthrough](https://www.robinwieruch.de/react-testing-tutorial/).
+Вот и все для тестирования различных аспектов при использовании Redux. Это может быть достигнуто с помощью модульных тестов. Вы также можете применять интеграционные тесты, например, для тестирования создателя действий и редуктора вообще. В конце концов, у вас есть план для постоянного тестирования этих функций, и больше нет никаких оснований не проверять ваш код. Если вы хотите погрузиться в настройку тестирования для своего приложения React, ознакомьтесь с этим [Руководство по настройке и использованию тестирования React](https://www.robinwieruch.de/react-testing-tutorial/).
 
-## Error Handling
+## Обработка ошибок
 
-The topic of error handling is rarely touched in programming. Often, the topic is avoided by the community and it is hard to find a common sense about it. This chapter gives you basic guidance on how you could provide error handling in your Redux application.
+Тема обработки ошибок редко затрагивается в программировании. Часто сообщество избегает этой темы, и в ней трудно найти здравый смысл. В этой главе дается базовое руководство о том, как можно обеспечить обработку ошибок в приложении Redux.
 
-Error handling is often involved when making requests to an API. You have learned about asynchronous actions in Redux that can be used for these kind of side-effects. But there was no saying about error handling in those side-effects so far. How to catch the errors and how to make them visible for your application end-user?
+Обработка ошибок часто нужна при выполнением запросов к API. Вы узнали об асинхронных действиях в Redux, которые можно использовать для подобных побочных эффектов. Но до сих пор не говорилось об обработке ошибок в этих побочных эффектах. Как отловить ошибки и как сделать их видимыми для конечного пользователя вашего приложения?
 
-Basically, an error in an application can be represented as a state. That's why the topic is discussed in a state management book in the first place. For instance, imagine that you get your todo items from a server request. You would have an API on the server-side that exposes these todo items. Once you fetch these todo items from the API, you would have to deal with error handling, because a request can always fail. The following request returns a JavaScript promise. The fetch can be either successfully resolved in a `then()` method or yields an error in a `catch()` method.
+По сути, ошибка в приложении может быть представлена как состояние. В первую очередьб поэтому тема обсуждается в книге управления состоянием . Например, представьте, что вы получаете элементы todo по запросу с сервера. У вас будет API на стороне сервера, который предоставляет эти элементы todo. После того, как вы получите эти элементы todo из API, вам придется иметь дело с обработкой ошибок, потому что запрос всегда может завершиться неудачей. Следующий запрос возвращает промис JavaScript. Выборка может быть либо успешно разрешена в методе `then()`, либо выдает ошибку в методе `catch()`.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -446,7 +449,7 @@ fetch('my/todos/api').then(function(response) {
 });
 ~~~~~~~~
 
-When using Redux asynchronous actions with Redux Thunk, the request could live in a thunk:
+При использовании асинхронных действий Redux с Redux Thunk, запрос может находиться в thunk:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -461,7 +464,7 @@ function getTodos(dispatch) {
 }
 ~~~~~~~~
 
-Now, it would be up to you to store either the todos or the error as state in your Redux store. You could have two potential actions:
+Теперь вам нужно сохранить либо задачи, либо ошибку как состояние в вашем хранилище Redux. Вы можете иметь два возможных действия:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -469,7 +472,7 @@ const TODOS_FETCH_SUCCESS = 'TODOS_FETCH_SUCCESS';
 const TODOS_FETCH_ERROR = 'TODOS_FETCH_ERROR';
 ~~~~~~~~
 
-These could be used in your Redux Thunk to store both potential outcomes:
+Они могут быть использованы в вашем Redux Thunk для хранения обоих возможных результатов:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -484,7 +487,7 @@ function getTodos(dispatch) {
 }
 ~~~~~~~~
 
-The todo reducer would have to deal with both actions now. One that stores the todo items and one that stores the error object.
+Редуктор todo теперь может справиться с обоими действиями. С тем, который хранит элементы todo, и тем, который хранит объект ошибки.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -508,8 +511,8 @@ function reducer(state = initialState, action) {
 ...
 ~~~~~~~~
 
-That's it basically for the state management part. Whereas the `applyFetchTodosError()` function would set the error object in the state, the `applyFetchTodosSuccess()` function would set the list of todos. In addition, the success function would have to reset the error property in the state to null again, because imagine you would do a second request after the first request has failed. When the second request was successful, you would want to store the todo items but reset the error state.
+На этом, в основном, все для части управления состоянием. В то время как функция `applyFetchTodosError()` запишет объект ошибки в состоянии, функция `applyFetchTodosSuccess()` запишет список задач. Кроме того, функция успеха должна была бы снова сбросить свойство error в состоянии null, поскольку представьте, что вы сделаете второй запрос после того, как первый запрос не будет выполнен. Когда второй запрос был успешным, вы хотите сохранить элементы todo, но сбросить состояние ошибки.
 
-In your view layer, depending on the todo state, you could decide whether to show an error message, because there is an error object in the todo state, or to show the list of todos. When there is an error message displayed, you could provide your end-user with a button to try fetching the todos again. When the second request is successful, the error object is set to null and instead the todo items are set in the state. The view layer could display the list of todo items now.
+В вашем слое представления, в зависимости от состояния задачи, вы можете решить, показывать ли сообщение об ошибке, потому что в состоянии задачи есть объект ошибки, или отображать список задач. Когда отображается сообщение об ошибке, вы можете предоставить своему конечному пользователю кнопку для повторной выборки задач. Когда второй запрос успешен, объект ошибки устанавливается в null, и вместо этого элементы todo устанавливаются в состояние. Слой представления теперь может отображать список элементов todo.
 
-After all, there is no magic behind error handling in Redux. Whenever an error occurs, you would store it in your state. When the view layer notices an error in the state, it could use conditional rendering to show an error message instead of the assumed result.
+В конце концов, в Redux нет никакого волшебства за обработкой ошибок. Всякий раз, когда возникает ошибка, вы должны сохранить ее в своем состоянии. Когда уровень представления замечает ошибку в состоянии, он может использовать условный рендеринг, чтобы показать сообщение об ошибке вместо предполагаемого результата.
