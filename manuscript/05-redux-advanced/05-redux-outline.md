@@ -1,46 +1,46 @@
-# Redux Ecosystem Outline
+# Описание экосистемы Redux
 
-After learning the basics and advanced techniques in Redux and applying them on your own in an application, you are ready to explore the Redux ecosystem. The Redux ecosystem is huge and cannot be covered in one book. However, this chapter attempts to outline different paths you can take to explore the world of Redux. Apart from outlining these different paths, a couple of topics will be revisited as well to give you a richer toolset when using Redux.
+Изучив основы и передовые методы в Redux и применив их самостоятельно в приложении, вы готовы исследовать экосистему Redux. Экосистема Redux огромна и не может быть рассмотрена в одной книге. Тем не менее, эта глава пытается наметить различные пути, по которым вы можете исследовать мир Redux. Помимо описания этих различных путей, будет также рассмотрена пара тем, чтобы дать вам богатый набор инструментов при использовании Redux.
 
-Before you are left alone with the last chapter covering Redux, I want to make you aware of [this repository](https://github.com/markerikson/redux-ecosystem-links) by Mark Erikson. It is a categorized list of Redux related add-ons, libraries and articles. If you get stuck at some point, want to find a solution for your problem, or are just curious about the ecosystem, check out the repository. Otherwise, I encourage you to join the official [Slack Group](https://slack-the-road-to-learn-react.wieruch.com/) for further recommendations.
+Прежде чем оставить вас в покое с последней главой, посвященной Redux, я хочу, чтобы вы узнали о [этом репозитории](https://github.com/markerikson/redux-ecosystem-links) Марка Эриксона. Это категоризированный список дополнений, библиотек и статей, связанных с Redux. Если вы застряли в какой-то момент, хотите найти решение для вашей проблемы или просто хотите узнать об экосистеме, посмотрите репозиторий. В противном случае, я призываю вас присоединиться к официальной [Slack Group](https://slack-the-road-to-learn-react.wieruch.com/) для получения дальнейших рекомендаций.
 
 ## Redux DevTools
 
-The Redux DevTools are essential for many developers when implementing Redux applications. It improves the Redux development workflow by offering a rich set of features such as inspecting the state and action payload, time traveling and realtime optimizations.
+Redux DevTools важны для многих разработчиков при реализации приложений Redux. Он улучшает рабочий процесс разработки Redux, предлагая богатый набор функций, таких как проверка состояния и полезной нагрузки, путешествия во времени и оптимизации в реальном времени.
 
-How does it work? Basically, you have two choices to use the Redux DevTools. Either you integrate it directly into your project by using its node package with npm or you install the official browser extension. While the former comes with an implementation setup in your application, the latter can simply be installed for your browser without changing your implementation.
+Как это работает? В принципе, у вас есть два варианта использования Redux DevTools. Либо вы интегрируете его непосредственно в свой проект, используя пакет с npm, либо устанавливаете официальное расширение для браузера. В то время как первый поставляется с настройкой реализации в вашем приложении, последний может быть просто установлен для вашего браузера без изменения вашей реализации.
 
-The most obvious feature is to inspect actions and state. Rather than using the [redux-logger](https://github.com/evgenyrodionov/redux-logger), you can use the Redux DevTools to get insights into these information. You can follow each state change by inspecting the action and the state.
+Наиболее очевидной особенностью является проверка действий и состояния. Вместо того чтобы использовать [redux-logger](https://github.com/evgenyrodionov/redux-logger), вы можете использовать Redux DevTools, чтобы получить представление об этой информации. Вы можете следить за каждым изменением состояния, проверяя действие и состояние.
 
-Another great feature is the possibility to time travel. In Redux you dispatch actions and travel from one state to another state. The Redux DevTools enable you to travel back in time by reverting actions. For instance, that way you wouldn't need to reload your browser anymore to follow a set of actions to get to a specific application state. You could simply alter the actions in between by using the Redux DevTools. You can trace back what action led to which state.
+Еще одна отличная особенность - возможность путешествовать во времени. В Redux вы отправляете действия и путешествуете от одного состояния к другому. Redux DevTools позволяет вам путешествовать во времени, отменяя действия. Например, таким образом вам больше не нужно будет перезагружать браузер, чтобы выполнить набор действий, чтобы перейти к определенному состоянию приложения. Вы можете просто изменить действия между ними, используя Redux DevTools. Вы можете отследить, какое действие привело к какому состоянию.
 
-In addition, you can persist your Redux state when doing page reloads with Redux DevTools. That way, you don't need to perform all the necessary actions to get to a specific state anymore. You simply reload the page and keep the same application state. This enables you to debug your application when having one specific application state.
+Кроме того, вы можете сохранить свое состояние Redux при перезагрузке страницы с помощью Redux DevTools. Таким образом, вам больше не нужно выполнять все необходимые действия, чтобы перейти в определенное состояние. Вы просто перезагрузите страницу и сохраните то же состояние приложения. Это позволяет вам отлаживать ваше приложение при наличии одного определенного состояния приложения.
 
-However, there are more neat features that you might enjoy while developing a Redux application. You can find all information about the Redux DevTools in the [official repository](https://github.com/gaearon/redux-devtools).
+Тем не менее, есть и другие полезные функции, которые могут вам пригодиться при разработке приложения Redux. Всю информацию о Redux DevTools вы можете найти в [официальном репозитории](https://github.com/gaearon/redux-devtools).
 
 ## Connect Revisited
 
-In one of the previous chapters, you have connected your view layer to your state layer with [react-redux](https://github.com/reactjs/react-redux). There you have used the provider pattern in React to make the state accessible to your entire view layer.
+В одной из предыдущих глав вы связали свой слой представления со слоем состояния с помощью [react-redux](https://github.com/reactjs/react-redux). Там вы использовали шаблон провайдера в React, чтобы сделать состояние доступным для всего слоя представления.
 
-The `connect` higher-order components enabled you to wire the Redux store to any component. The most often used two arguments are `mapStateToProps()` and `mapDispatchToProps()` for the connect higher-order component. While the former gives access to the state, the latter gives access to actions to be dispatched for manipulating the state.
+Компоненты высшего порядка `connect` позволили вам подключить хранилище Redux к любому компоненту. Наиболее часто используемые два аргумента - это `mapStateToProps()` и `mapDispatchToProps()` для компонента подключения более высокого порядка. В то время как первый дает доступ к состоянию, последний дает доступ к действиям, которые будут направлены для манипулирования состоянием.
 
-However, `connect` has two more optional arguments that shouldn't stay uncovered in this book.
+Однако у `connect` есть еще два необязательных аргумента, которые не должны остаться не озвученными в этой книге.
 
-The third argument is called `mergeProps()`. As arguments it gets the result from `mapStateToProps()`, `mapDispatchToProps()` and the parent props: `mergeProps(stateProps, dispatchProps, ownProps)`. The function returns props as an object to the wrapped component. Basically, it gives you an intermediate layer to mix up `stateProps` and `dispatchProps` before they reach the wrapped component. However, it is rarely used. Often, when mixing up state and actions in this layer, it is associated with a bad state architecture. You should ask yourself if something else can be changed to avoid this intermediate layer.
+Третий аргумент называется `mergeProps()`. В качестве аргументов он получает результат от  `mapStateToProps()`, `mapDispatchToProps()` и родительских пропсов: `mergeProps (stateProps, dispatchProps, ownProps)`. Функция возвращает пропсы как объект для обернутого компонента. По сути, он дает вам промежуточный уровень, чтобы смешать `stateProps` и` dispatchProps`, прежде чем они достигнут обернутого компонента. Тем не менее, он используется редко. Часто при смешивании состояния и действий на этом уровне это связано с плохой архитектурой состояния. Вы должны спросить себя, можно ли что-то изменить, чтобы избежать этого промежуточного слоя.
 
-The fourth argument is called `options`. It is an object to configure the connect higher-order component. It comes with these additional properties: `pure`, `areStatesEqual()`, `areOwnPropsEqual()`, `areMergedPropsEqual()`. How does it work altogether? When the first argument, the `pure` property, is set to true, the connect higher-order component will avoid re-rendering the view and avoids the calls to its arguments `mapStateToProps()`, `mapDispatchToProps()` and `mergeProps()`. But only when the equality checks of `areStatesEqual()`, `areOwnPropsEqual()`, `areMergedPropsEqual()` remain equal based on their respective equality checks. These equality checks are performed on the previous state and props and updated state and props. These equality checks can be modified in the options `areStatesEqual`, `areOwnPropsEqual`, `areMergedPropsEqual`. Otherwise they have a default equality check.
+Четвертый аргумент называется `options`. Это объект для настройки подключения компонента высокого порядка. Он поставляется с такими дополнительными свойствами: `pure`,` areStatesEqual()`, `areOwnPropsEqual()`, `areMergedPropsEqual()`. Как это работает в целом? Когда первый аргумент, свойство `pure`, имеет значение true, компонент подключения высокого порядка будет избегать повторной визуализации представления и избегать вызовов его аргументов `mapStateToProps()`, `mapDispatchToProps() ` и `mergeProps()`. Но только когда проверки на равенство `areStatesEqual()`, `areOwnPropsEqual()`, `areMergedPropsEqual()` остаются равными на основе соответствующих проверок равенства. Эти проверки на равенство выполняются для предыдущего состояния и пропсов и обновленного состояния и пропсов. Эти проверки на равенство могут быть изменены в опциях `areStatesEqual`, `areOwnPropsEqual`, `areMergedPropsEqual`. В противном случае они имеют проверку на равенство по умолчанию.
 
-After all, the `options` are a pure performance optimization. It is not often used when developing Redux applications. Basically, you can set the `pure` property to true to avoid re-renderings and other argument evaluations of the `connect` higher-order component. But it comes with certain default equality checks that can be configured. In addition, the underlying assumption is that the wrapped component is a pure component and doesn't rely on any other side-effect data.
+В конце концов, `options` - это чистая оптимизация производительности. Это не часто используется при разработке приложений Redux. По сути, вы можете установить для свойства `pure` значение true, чтобы избежать повторного рендеринга и других вычислений аргументов компонента высшего порядка `connect`. Но он поставляется с определенными проверками равенства по умолчанию, которые можно настроить. Кроме того, основное предположение заключается в том, что обернутый компонент является чистым компонентом и не зависит от каких-либо других данных о побочных эффектах.
 
-If you want to read up the `connect` higher-order component again, you can checkout the [official repository of react-redux](https://github.com/reactjs/react-redux) and look for the `connect` chapter.
+Если вы хотите снова прочитать про компонент высокого порядка `connect`, вы можете обратиться к [официальному репозиторию react-redux](https://github.com/reactjs/react-redux) и найти главу `connect`.
 
-## Concise Actions and Reducers
+## Сокращенные действия и редукторы
 
-Redux made state management predictable with clear constraints. Yet, these constraints come with a lot of code to manage actions and reducers. There are people who argue that writing Redux code is verbose. That's why there exist utility libraries on top of Redux to reduce the boilerplate code. One of them is called [redux-actions](https://github.com/acdlite/redux-actions).
+Redux сделал управление состоянием предсказуемым с четкими ограничениями. Тем не менее, эти ограничения сопровождаются большим количеством кода для управления действиями и редукторами. Есть люди, которые утверждают, что написание кода Redux является многословным. Вот почему в Redux существуют служебные библиотеки для сокращения стандартного кода. Один из них называется [redux-actions](https://github.com/acdlite/redux-actions).
 
-The library attempts to make your actions and reducers concise. It comes with three methods: `createAction()`, `handleAction()` and `combineActions()`. The book will give you a brief overview of the former two methods.
+Библиотека пытается сделать ваши действия и редукторы краткими. Он поставляется с тремя методами: `createAction()`, `handleAction()` и `combActions()`. Книга даст вам краткий обзор первых двух методов.
 
-The `createAction()` method is a utility for action creators. To be more specific, the method should be named: `createActionCreator()`. The only required argument for the method is an action type.
+Метод `createAction()` является утилитой для создателей действий. Чтобы быть более конкретным, метод должен быть назван: `createActionCreator()`. Единственным обязательным аргументом для метода является тип действия.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -49,7 +49,7 @@ import { createAction } from 'redux-actions';
 const doAddTodo = createAction('TODO_ADD');
 ~~~~~~~~
 
-The `doAddTodo()` is an action creator. It uses the specified action type 'TODO_ADD'. When using it, you can pass a payload when needed. It becomes automatically allocated under a payload property.
+`doAddTodo()` является создателем действий. Он использует указанный тип действия 'TODO_ADD'. При его использовании вы можете передавать полезную нагрузку при необходимости. Он автоматически распределяется под свойством полезной нагрузки.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -65,7 +65,7 @@ const action = doAddTodo({ id: '0', name: 'learn redux', completed: false });
 // }
 ~~~~~~~~
 
-The `handleAction()` method is a utility for reducers. It aligns action types with reducers whereas no switch case statement is needed anymore. It takes the action type as argument and a reducer function for handling the incoming action. As third argument, it takes an initial state.
+Метод `handleAction()` является утилитой для редукторов. Он выравнивает типы действий с редукторами, в то время как инструкция switch больше не требуется. Он принимает тип действия в качестве аргумента и функцию-редуктор для обработки входящего действия. В качестве третьего аргумента, он принимает начальное состояние.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -79,7 +79,7 @@ function applyAddTodo(state, action) {
 }
 ~~~~~~~~
 
-The two methods `createAction()` and `handleAction()` have sibling methods for using, creating, and handling multiple actions too: `createActions()` and `handleActions()`. Especially when defining a reducer, it makes sense to map multiple action types to multiple handlers.
+Два метода `createAction()` и `handleAction()` имеют родственные методы для использования, создания и обработки нескольких действий: `createActions()` и `handleActions()`. При определении редуктора имеет особый смысл отобразить несколько типов действий на несколько обработчиков.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -91,7 +91,7 @@ const reducer = handleActions({
 }, initialState);
 ~~~~~~~~
 
-As you can see, it is far more concise than defining reducers in plain JavaScript with the switch case statement.
+Как видите, это гораздо более кратко, чем определение редукторов в простом JavaScript с помощью оператора switch.
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -108,35 +108,35 @@ function reducer(state = initialState, action) {
 }
 ~~~~~~~~
 
-The drawback when using the library is that it hides how Redux works with plain JavaScript. It can be difficult for newcomers to grasp what's going on when using such utility libraries from the very beginning without understanding how actions and reducers in Redux work.
+Недостатком использования библиотеки является то, что она скрывает, как Redux работает с простым JavaScript. Новичкам может быть сложно понять, что происходит при использовании таких служебных библиотек с самого начала, не понимая, как работают действия и редукторы в Redux.
 
-The library is only a small utility belt for Redux, yet a lot of people are using it. You can read up everything about it in the [official documentation](https://github.com/acdlite/redux-actions).
+Библиотека - это всего лишь небольшая вспомогательная поддержка для Redux, но многие используют ее. Вы можете прочитать все об этом в [официальной документации](https://github.com/acdlite/redux-actions).
 
-## React Redux Libraries
+## React Redux библиотеки
 
-Apart from the [react-redux](https://github.com/reactjs/react-redux) library that glues together your view and state layer, there exist other libraries that can be used when you already use React and Redux. Usually, these libraries provide you with React higher-order components that are coupled to the Redux store. That way, you don't need to worry about the state management when it is shielded away from you.
+Помимо библиотеки [react-redux](https://github.com/reactjs/react-redux), которая склеивает ваш слой представления и состояния, существуют и другие библиотеки, которые можно использовать, когда вы уже используете React и Redux. Обычно эти библиотеки предоставляют вам компоненты высшего порядка React, которые связаны с хранилищем Redux. Таким образом, вам не нужно беспокоиться об управлении состоянием, когда оно защищено от вас.
 
-For instance, when using HTML forms in React, it is often tedious to track the state of each input element in your local component. Moreover you are often confronted with validation of these forms. The library [redux-form](https://github.com/erikras/redux-form) helps you to keep track of the form state not in the local state but in the Redux store. It enables you to access and update the form state through a higher-order component that is connected to the Redux store. In addition, it supports you in validating your form state before a user can submit it.
+Например, при использовании HTML-форм в React часто бывает сложно отслеживать состояние каждого элемента ввода в локальном компоненте. Более того, вы часто сталкиваетесь с валидацией этих форм. Библиотека [redux-form](https://github.com/erikras/redux-form) помогает отслеживать состояние формы не в локальном состоянии, а в хранилище Redux. Это позволяет получить доступ и обновить состояние формы через компонент высшего порядка, который подключен к хранилищу Redux. Кроме того, он поддерживает вас в валидации вашего состояния формы, прежде чем пользователь может отправить его.
 
-Another example would be a table component in React. A plain table component in React can be easily written on your own. But what about certain features such as sorting, filtering or pagination? Then it becomes difficult, because you would have to manage the state of each initialized table component. There exist several libraries that help you to implement tables in React and glue them to the Redux store. For instance, the [react-redux-composable-list](https://github.com/SmallImprovements/react-redux-composable-list) can be used for such cases.
+Другим примером может быть компонент таблицы в React. Простой компонент таблицы в React может быть легко написан самостоятельно. Но как насчет определенных функций, таких как сортировка, фильтрация или разбиение на страницы? Тогда это становится трудным, потому что вам придется управлять состоянием каждого инициализированного компонента таблицы. Существует несколько библиотек, которые помогут вам реализовать таблицы в React и склеить их с хранилищем Redux. Например, для таких случаев можно использовать [react-redux-composable-list](https://github.com/SmallImprovements/react-redux-composable-list).
 
-There are a ton of libraries that already abstract away the state management for you when using common components such as forms or tables. Again you can have a look into [this repository](https://github.com/markerikson/react-redux-links) to get to know various of these libraries. It makes sense to use battle tested abstractions as libraries before implementing them on your own.
+Существует множество библиотек, которые уже абстрагируют вас от управления состоянием при использовании общих компонентов, таких как формы или таблицы. Опять же, вы можете заглянуть в [этот репозиторий](https://github.com/markerikson/react-redux-links), чтобы ознакомиться с различными из этих библиотек. Имеет смысл использовать проверенные в сражениях абстракции в качестве библиотек, прежде чем применять их самостоятельно.
 
-## Routing with Redux
+## Маршрутизация с Redux
 
-In single page applications you will introduce routing eventually. In React, there exists one preferred library for routing: [React Router](https://github.com/ReactTraining/react-router). There should be other routing libraries for other single page application solutions. These solutions help you to navigate from URL to URL without reloading the page. That's how single page applications work after all. You only fetch your application once, but keep track of the state even when you route from URL to URL. Thus the routes in your URLs are state, too. But is it managed in the Redux store?
+В одностраничных приложениях вы будете вводить маршрутизацию в конце концов. В React существует одна предпочтительная библиотека для маршрутизации: [React Router](https://github.com/ReactTraining/react-router). Есть и другие библиотеки маршрутизации для других одностраничных приложений. Эти решения помогут вам перейти от URL к URL без перезагрузки страницы. Так работают одностраничные приложения. Вы получаете приложение только один раз, но отслеживаете состояние даже при маршрутизации с URL на URL. Таким образом, маршруты в ваших URL тоже состояния. Но управляется ли это в хранилище Redux?
 
-The common sense when using routing in Redux is that the Router handles the URL and Redux handles the state. There is no interaction between them. For instance, when you decide to store your visibility filter `SHOW_ALL` into your URL (domain.com?filter=SHOW_ALL) instead of your Redux store, it is fine doing it. You would only have to retrieve the state from the URL and not from the Redux store. So it depends on your own setup. In the end, the Router holds the single source of truth for the URL state and the Redux store holds the single source of truth for the application state. You can read more about this topic in the [official documentation](http://redux.js.org/docs/advanced/UsageWithReactRouter.html) of Redux.
+Здравый смысл при использовании маршрутизации в Redux заключается в том, что маршрутизатор обрабатывает URL, а Redux обрабатывает состояние. Там нет взаимодействия между ними. Например, если вы решили сохранить свой фильтр видимости `SHOW_ALL` в своем URL (domain.com?filter=SHOW_ALL) вместо своего хранилища Redux, это нормально. Вам нужно будет только получить состояние из URL, а не из магазина Redux. Так что это зависит от вашей собственной настройки. В конце концов, маршрутизатор содержит единственный источник правды для состояния URL, а хранилище Redux содержит единственный источник правды для состояния приложения. Вы можете прочитать больше об этой теме в [официальной документации](http://redux.js.org/docs/advanced/UsageWithReactRouter.html) Redux.
 
-## Typed Redux
+## Типизированный Redux
 
-JavaScript by nature is an untyped language. You will often encounter bugs in your career that could have been prevented by type safety. In Redux, type safety can make a lot of sense, because you can define exactly what kind of types go into your actions, reducers or state. You could define that an action that creates a todo item would have the property `name` with the type String and the property `completed` with the type Boolean. Every time you pass a wrong typed value for these properties to create a todo item, you would get an error on compile time of your application. You wouldn't wait until your application runs to figure out that you have passed a wrong value to your action. There wouldn't be a runtime exception when you can already cover these bugs during compile time.
+JavaScript по своей природе является нетипизированным языком. В вашей карьере вы часто будете сталкиваться с ошибками, которые могли бы быть предотвращены безопасностью типов. В Redux безопасность типов может иметь большой смысл, потому что вы можете точно определить, какие типы входят в ваши действия, редукторы или состояния. Вы можете определить, что действие, создающее элемент todo, будет иметь свойство `name` с типом String и свойство` complete` с типом Boolean. Каждый раз, когда вы передаете неправильное типизированное значение для этих свойств для создания элемента todo, вы получаете сообщение об ошибке во время компиляции вашего приложения. Вам не нужно ждать, пока ваше приложение запустится, чтобы понять, что вы передали неверное значение своему действию. Не будет ошибок во времемя выполнения, если вы уже можете устранить эти ошибки во время компиляции.
 
-Typed JavaScript can be a verbose solution when working on short living or simple projects. But when working in a large code base, where code needs to be kept maintainable, it is advisable to use a type checker. It makes refactorings easier and adds a bunch of benefits to the developer experience due to editor and IDE integrations.
+Типизированный JavaScript может быть многословным решением при работе над недолговечными или простыми проектами. Но при работе с большой кодовой базой, где код должен быть поддерживаемым, рекомендуется использовать средство проверки типов. Это упрощает рефакторинг и добавляет ряд преимуществ для разработчиков благодаря интеграции с редактором и IDE.
 
-There exist two major solutions gradually using JavaScript as a typed language: Flow (Facebook) and TypeScript (Microsoft). While the former has its biggest impact in the React community, the latter is well adopted amongst other frameworks and libraries.
+Существуют два основных решения, постепенно использующих JavaScript в качестве типизированного языка: Flow (Facebook) и TypeScript (Microsoft). В то время как первый имеет наибольшее влияние в сообществе React, последний хорошо зарекомендовал себя среди других фреймворков и библиотек.
 
-What would a type checker like Flow look like when using in Redux? For instance, in a todo reducer the state could be defined by a type:
+Как бы выглядела программа проверки типа Flow при использовании в Redux? Например, в редукторе todo состояние может быть определено типом:
 
 {title="Code Playground",lang="javascript"}
 ~~~~~~~~
@@ -160,14 +160,14 @@ function todoReducer(state: Todos = [], action) {
 }
 ~~~~~~~~
 
-Now, whenever an action leads to a state that is not defined by its type definition, you would get an error on compile time of your application. In addition, you can use plugins for your editor or IDE to give you the early feedback that something is wrong with your action or reducer. As the previous example has shown type safety for reducers, you could apply the same for your action creators and selectors. Everything can be type checked. You can read more about [Flow on its official site](https://flow.org/).
+Теперь, когда действие приводит к состоянию, которое не определено его определением типа, вы получите ошибку во время компиляции вашего приложения. Кроме того, вы можете использовать плагины для своего редактора или IDE, чтобы на ранних этапах получить обратную связь о том, что что-то не так с вашим действием или редуктором. Как и в предыдущем примере, показана безопасность типов для редукторов, вы можете применить то же самое для создателей и селекторов действий. Все может быть проверено типом. Вы можете прочитать больше о [Flow на его официальном сайте](https://flow.org/).
 
-## Server-side Redux
+## Redux на сервере
 
-Server-side rendering is used to render the initial page load from a server. Every further user interaction is done on the client-side. For instance, it is beneficial for SEO, because when a web crawler visits your website, it can retrieve the whole application without bothering to execute JavaScript on the client-side. It retrieves the whole application with its initial state. The initial state can already be data that is fetched from a database. In React, but also in other single page applications, there are solutions to deal with server-side rendering. However, introducing server-side rendering comes with a handful of challenges. One of these challenges is state management.
+Рендеринг на стороне сервера используется для визуализации начальной загрузки страницы с сервера. Каждое дальнейшее взаимодействие с пользователем осуществляется на стороне клиента. Например, это полезно для SEO, потому что, когда веб-сканер посещает ваш сайт, он может извлечь все приложение, не обращая внимание на выполнение JavaScript на стороне клиента. Он получает все приложение с его начальным состоянием. Начальное состояние уже может быть данными, которые выбираются из базы данных. В React, а также и в других одностраничных приложениях, есть решения для рендеринга на стороне сервера. Однако внедрение рендеринга на стороне сервера сопряжено с рядом проблем. Одна из этих задач - управление состоянием.
 
-When the initial page is rendered by the server-side, the initial state must be sent as a response to the client as well. The client in return would use the initial state. For instance, imagine you want to load data from a database before you send the response from the server to the client. Somehow you would have to put this data into the response next to your server-side rendered application. Afterward, the client can use the response to render the application and would already have the initial state that comes from a database. If the data wasn't sent along in the initial server request, the client would have to fetch it again.
+Когда начальная страница отображается на стороне сервера, начальное состояние также должно быть отправлено как ответ клиенту. Клиент в ответ будет использовать начальное состояние. Например, представьте, что вы хотите загрузить данные из базы данных, прежде чем отправлять ответ с сервера клиенту. Каким-то образом вам придется поместить эти данные в ответ рядом с вашим приложением на стороне сервера. После этого клиент может использовать ответ для визуализации приложения и уже будет иметь начальное состояние, которое поступает из базы данных. Если данные не были отправлены в первоначальном запросе к серверу, клиент должен был бы получить их снова.
 
-In Redux, you can initialize a Redux store anywhere. You can initialize it on a client-side to access and manipulate the state, but also on the server-side to provide your application with an initial state. The initial state would be put in the Redux store before the server-sided response is send to the client application. But how does it work? The Redux store on the client-side is a singleton. There is only one instance of the Redux store. On the server-side, the Redux store isn't a singleton. Every time a server-side request is made, it would initialize a new instance of the Redux store. The Redux store can be filled with an initial state before the server-side response is sent to a client.
+В Redux вы можете инициализировать хранилище Redux где угодно. Вы можете инициализировать его на стороне клиента, чтобы получить доступ к состоянию и управлять им, а также на стороне сервера, чтобы предоставить вашему приложению начальное состояние. Начальное состояние будет помещено в хранилище Redux до отправки серверного ответа клиентскому приложению. Но как это работает? Хранилище Redux на стороне клиента - это синглтон. Существует только один экземпляр хранилища Redux. На стороне сервера хранилище Redux не является синглтоном. Каждый раз, когда делается запрос на стороне сервера, он инициализирует новый экземпляр хранилища Redux. Хранилище Redux может быть заполнено начальным состоянием до того, как ответ на стороне сервера будет отправлен клиенту.
 
-Server-side rendering and state management open up a whole new topic. That's why the book doesn't cover the topic but only points you in the right direction. You can read more about the topic in the [official Redux documentation](http://redux.js.org/docs/recipes/ServerRendering.html).
+Рендеринг на стороне сервера и управление состоянием открывают совершенно новую тему. Вот почему книга не охватывает тему, а лишь указывает вам правильное направление. Вы можете прочитать больше о теме в [официальной документации Redux](http://redux.js.org/docs/recipes/ServerRendering.html).
